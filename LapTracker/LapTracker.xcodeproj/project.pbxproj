@@ -1,0 +1,507 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB331E3E917D005E2937 /* AppDelegate.swift */; };
+		1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB371E3E917D005E2937 /* Main.storyboard */; };
+		1AF7BB3C1E3E917D005E2937 /* LapTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB3A1E3E917D005E2937 /* LapTracker.xcdatamodeld */; };
+		1AF7BB3E1E3E917D005E2937 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB3D1E3E917D005E2937 /* Assets.xcassets */; };
+		1AF7BB411E3E917D005E2937 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB3F1E3E917D005E2937 /* LaunchScreen.storyboard */; };
+		1AF7BB4C1E3EA4A0005E2937 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB4B1E3EA4A0005E2937 /* RegisterViewController.swift */; };
+		1AF7BB4E1E3EA4BE005E2937 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB4D1E3EA4BE005E2937 /* LoginViewController.swift */; };
+		1AF7BB9E1E3EBA4D005E2937 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF7BB8C1E3EB968005E2937 /* Locksmith.framework */; };
+		1AF7BB9F1E3EBA4D005E2937 /* Locksmith.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF7BB8C1E3EB968005E2937 /* Locksmith.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1AF7BBA51E3EBC2D005E2937 /* TrackTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BBA41E3EBC2D005E2937 /* TrackTableViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1AF7BB8B1E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EC25C591BA385AA004191AF;
+			remoteInfo = "Locksmith iOS";
+		};
+		1AF7BB8D1E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EC25C621BA385AB004191AF;
+			remoteInfo = "Locksmith iOS Tests";
+		};
+		1AF7BB8F1E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EC25C751BA385F6004191AF;
+			remoteInfo = "Locksmith OS X";
+		};
+		1AF7BB911E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EC25C7E1BA385F6004191AF;
+			remoteInfo = "Locksmith OS X Tests";
+		};
+		1AF7BB931E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0EC25CA71BA39C9F004191AF;
+			remoteInfo = "Locksmith watchOS";
+		};
+		1AF7BB951E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FBD0C9491C1866BE00291F2A;
+			remoteInfo = "Locksmith tvOS";
+		};
+		1AF7BB971E3EB968005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E3DD3B341D84356500A59312;
+			remoteInfo = "Test Host";
+		};
+		1AF7BBA01E3EBA4D005E2937 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EC25C581BA385AA004191AF;
+			remoteInfo = "Locksmith iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1AF7BBA21E3EBA4D005E2937 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1AF7BB9F1E3EBA4D005E2937 /* Locksmith.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1AF7BB301E3E917D005E2937 /* LapTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AF7BB331E3E917D005E2937 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1AF7BB381E3E917D005E2937 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1AF7BB3B1E3E917D005E2937 /* LapTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LapTracker.xcdatamodel; sourceTree = "<group>"; };
+		1AF7BB3D1E3E917D005E2937 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1AF7BB401E3E917D005E2937 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1AF7BB421E3E917D005E2937 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AF7BB4B1E3EA4A0005E2937 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		1AF7BB4D1E3EA4BE005E2937 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Locksmith.xcodeproj; sourceTree = "<group>"; };
+		1AF7BBA31E3EBB2F005E2937 /* LapTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LapTracker.entitlements; sourceTree = "<group>"; };
+		1AF7BBA41E3EBC2D005E2937 /* TrackTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackTableViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1AF7BB2D1E3E917D005E2937 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AF7BB9E1E3EBA4D005E2937 /* Locksmith.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1AF7BB271E3E917C005E2937 = {
+			isa = PBXGroup;
+			children = (
+				1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */,
+				1AF7BB321E3E917D005E2937 /* LapTracker */,
+				1AF7BB311E3E917D005E2937 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1AF7BB311E3E917D005E2937 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AF7BB301E3E917D005E2937 /* LapTracker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1AF7BB321E3E917D005E2937 /* LapTracker */ = {
+			isa = PBXGroup;
+			children = (
+				1AF7BBA31E3EBB2F005E2937 /* LapTracker.entitlements */,
+				1AF7BB331E3E917D005E2937 /* AppDelegate.swift */,
+				1AF7BB371E3E917D005E2937 /* Main.storyboard */,
+				1AF7BBA41E3EBC2D005E2937 /* TrackTableViewController.swift */,
+				1AF7BB4B1E3EA4A0005E2937 /* RegisterViewController.swift */,
+				1AF7BB4D1E3EA4BE005E2937 /* LoginViewController.swift */,
+				1AF7BB3D1E3E917D005E2937 /* Assets.xcassets */,
+				1AF7BB3F1E3E917D005E2937 /* LaunchScreen.storyboard */,
+				1AF7BB421E3E917D005E2937 /* Info.plist */,
+				1AF7BB3A1E3E917D005E2937 /* LapTracker.xcdatamodeld */,
+			);
+			path = LapTracker;
+			sourceTree = "<group>";
+		};
+		1AF7BB821E3EB968005E2937 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AF7BB8C1E3EB968005E2937 /* Locksmith.framework */,
+				1AF7BB8E1E3EB968005E2937 /* Locksmith iOS Tests.xctest */,
+				1AF7BB901E3EB968005E2937 /* Locksmith.framework */,
+				1AF7BB921E3EB968005E2937 /* Locksmith OS X Tests.xctest */,
+				1AF7BB941E3EB968005E2937 /* Locksmith.framework */,
+				1AF7BB961E3EB968005E2937 /* Locksmith.framework */,
+				1AF7BB981E3EB968005E2937 /* Test Host.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1AF7BB2F1E3E917D005E2937 /* LapTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AF7BB451E3E917D005E2937 /* Build configuration list for PBXNativeTarget "LapTracker" */;
+			buildPhases = (
+				1AF7BB2C1E3E917D005E2937 /* Sources */,
+				1AF7BB2D1E3E917D005E2937 /* Frameworks */,
+				1AF7BB2E1E3E917D005E2937 /* Resources */,
+				1AF7BBA21E3EBA4D005E2937 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AF7BBA11E3EBA4D005E2937 /* PBXTargetDependency */,
+			);
+			name = LapTracker;
+			productName = LapTracker;
+			productReference = 1AF7BB301E3E917D005E2937 /* LapTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1AF7BB281E3E917C005E2937 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Jack Boyce";
+				TargetAttributes = {
+					1AF7BB2F1E3E917D005E2937 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = WK367DXNJ2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 1AF7BB2B1E3E917C005E2937 /* Build configuration list for PBXProject "LapTracker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1AF7BB271E3E917C005E2937;
+			productRefGroup = 1AF7BB311E3E917D005E2937 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1AF7BB821E3EB968005E2937 /* Products */;
+					ProjectRef = 1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1AF7BB2F1E3E917D005E2937 /* LapTracker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1AF7BB8C1E3EB968005E2937 /* Locksmith.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Locksmith.framework;
+			remoteRef = 1AF7BB8B1E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB8E1E3EB968005E2937 /* Locksmith iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Locksmith iOS Tests.xctest";
+			remoteRef = 1AF7BB8D1E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB901E3EB968005E2937 /* Locksmith.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Locksmith.framework;
+			remoteRef = 1AF7BB8F1E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB921E3EB968005E2937 /* Locksmith OS X Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Locksmith OS X Tests.xctest";
+			remoteRef = 1AF7BB911E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB941E3EB968005E2937 /* Locksmith.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Locksmith.framework;
+			remoteRef = 1AF7BB931E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB961E3EB968005E2937 /* Locksmith.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Locksmith.framework;
+			remoteRef = 1AF7BB951E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF7BB981E3EB968005E2937 /* Test Host.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Test Host.app";
+			remoteRef = 1AF7BB971E3EB968005E2937 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1AF7BB2E1E3E917D005E2937 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AF7BB411E3E917D005E2937 /* LaunchScreen.storyboard in Resources */,
+				1AF7BB3E1E3E917D005E2937 /* Assets.xcassets in Resources */,
+				1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1AF7BB2C1E3E917D005E2937 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */,
+				1AF7BB3C1E3E917D005E2937 /* LapTracker.xcdatamodeld in Sources */,
+				1AF7BBA51E3EBC2D005E2937 /* TrackTableViewController.swift in Sources */,
+				1AF7BB4E1E3EA4BE005E2937 /* LoginViewController.swift in Sources */,
+				1AF7BB4C1E3EA4A0005E2937 /* RegisterViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1AF7BBA11E3EBA4D005E2937 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Locksmith iOS";
+			targetProxy = 1AF7BBA01E3EBA4D005E2937 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1AF7BB371E3E917D005E2937 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AF7BB381E3E917D005E2937 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1AF7BB3F1E3E917D005E2937 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AF7BB401E3E917D005E2937 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1AF7BB431E3E917D005E2937 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1AF7BB441E3E917D005E2937 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1AF7BB461E3E917D005E2937 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LapTracker/LapTracker.entitlements;
+				DEVELOPMENT_TEAM = WK367DXNJ2;
+				INFOPLIST_FILE = LapTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.boycesoftware.LapTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		1AF7BB471E3E917D005E2937 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LapTracker/LapTracker.entitlements;
+				DEVELOPMENT_TEAM = WK367DXNJ2;
+				INFOPLIST_FILE = LapTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.boycesoftware.LapTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1AF7BB2B1E3E917C005E2937 /* Build configuration list for PBXProject "LapTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AF7BB431E3E917D005E2937 /* Debug */,
+				1AF7BB441E3E917D005E2937 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AF7BB451E3E917D005E2937 /* Build configuration list for PBXNativeTarget "LapTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AF7BB461E3E917D005E2937 /* Debug */,
+				1AF7BB471E3E917D005E2937 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1AF7BB3A1E3E917D005E2937 /* LapTracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1AF7BB3B1E3E917D005E2937 /* LapTracker.xcdatamodel */,
+			);
+			currentVersion = 1AF7BB3B1E3E917D005E2937 /* LapTracker.xcdatamodel */;
+			path = LapTracker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 1AF7BB281E3E917C005E2937 /* Project object */;
+}

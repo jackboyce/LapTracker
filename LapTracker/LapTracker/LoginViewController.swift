@@ -42,30 +42,6 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func sendData() {
-        
-        var request = URLRequest(url: URL(string: "http://localhost:8000/login")!)
-        request.httpMethod = "POST"
-        let postString = "email=\(email.text!)&password=\(password.text!)"
-        print(postString)
-        request.httpBody = postString.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
-            }
-            
-            let responseString = String(data: data, encoding: .utf8)
-            //print("responseString = \(responseString)")
-        }
-        task.resume()
-    }
-    
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
@@ -89,26 +65,32 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: Any) {
+        errorLabel.text = ""
         save()
-        sendData()
+        print("Before clear: \(ServerCommands.currentUser())")
+        ServerCommands.clearUser() {
+            print("After clear: \(ServerCommands.currentUser())")
+            ServerCommands.login(email: self.email.text!, password: self.password.text!) { resp in
+                if(resp != nil){
+                    //print(resp)
+                    print("After login: \(ServerCommands.currentUser())")
+                    self.segueToTracks()
+                }
+            }
+        }
+    }
+    
+    
+    
+    func segueToTracks() {
+        let user = ServerCommands.currentUser()
         
-        var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "http://localhost:8000/authStatus") as! URL)
-        var loggedIn = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-        print(loggedIn)
-        
-        if loggedIn != "none" {
+        if user == email.text! {
             let trackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Tracks") as! TrackTableViewController
             self.navigationController?.pushViewController(trackViewController, animated: true)
         } else {
             errorLabel.text = "error"
         }
-        /*
-        if loggedIn == email.text! {
-            let trackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Tracks") as! TrackTableViewController
-            self.navigationController?.pushViewController(trackViewController, animated: true)
-        } else if loggedIn != "none" {
-            var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "http://localhost:8000/logout") as! URL)
-        }*/
     }
 
     /*
@@ -120,28 +102,6 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }
 
-extension URLSession {
-    func synchronousDataTask(with url: URL) -> (Data?, URLResponse?, Error?) {
-        var data: Data?
-        var response: URLResponse?
-        var error: Error?
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        let dataTask = self.dataTask(with: url) {
-            data = $0
-            response = $1
-            error = $2
-            
-            semaphore.signal()
-        }
-        dataTask.resume()
-        
-        _ = semaphore.wait(timeout: .distantFuture)
-        
-        return (data, response, error)
-    }
-}
+

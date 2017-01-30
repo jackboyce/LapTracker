@@ -12,12 +12,32 @@ class TrackTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+        
+        let center = UIButton(type: UIButtonType.custom) as UIButton
+        center.frame = CGRect(x:0, y:0, width: 100, height: 40) as CGRect
+        center.setTitleColor(UIColor.init(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0), for: UIControlState.normal)
+        center.setTitleColor(UIColor.white, for: UIControlState.highlighted)
+        center.setTitle("Download", for: UIControlState.normal)
+        center.addTarget(self, action: #selector(downloadPressed), for: UIControlEvents.touchUpInside)
+        self.navigationItem.titleView = center
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func addPressed() {
+        print("press")
+        let newTrackViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewTrack") as! NewTrackViewController
+        self.navigationController?.pushViewController(newTrackViewController, animated: true)
+    }
+    
+    func downloadPressed() {
+        print("Pressed")
     }
 
     override func didReceiveMemoryWarning() {

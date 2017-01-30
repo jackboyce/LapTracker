@@ -116,11 +116,12 @@
                         <outlet property="errorLabel" destination="LKa-Gr-ZAf" id="xKS-BV-W4U"/>
                         <outlet property="password" destination="RCO-rQ-9IT" id="SD5-eh-Dr9"/>
                         <outlet property="rememberSwitch" destination="CsM-oV-amJ" id="Lva-t0-sVO"/>
+                        <segue destination="qm9-PR-09s" kind="show" id="C9i-89-7g3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="guQ-K0-XDJ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="0.80000000000000004" y="497.90104947526243"/>
+            <point key="canvasLocation" x="-78" y="498"/>
         </scene>
         <!--Track Table View Controller-->
         <scene sceneID="loI-Qz-SXM">
@@ -145,10 +146,31 @@
                             <outlet property="delegate" destination="qm9-PR-09s" id="fcQ-Ch-k3w"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="Wj9-yX-dC9" kind="show" id="MQy-lK-aAi"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dw6-Fu-Ygz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1134" y="498"/>
+        </scene>
+        <!--New Track View Controller-->
+        <scene sceneID="a3E-Qm-WYl">
+            <objects>
+                <viewController storyboardIdentifier="NewTrack" id="Wj9-yX-dC9" customClass="NewTrackViewController" customModule="LapTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eTg-9W-guo"/>
+                        <viewControllerLayoutGuide type="bottom" id="sqk-up-ZV8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mny-Yb-P2D">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xVJ-x3-N1d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2209" y="141"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="U8k-oR-doc">

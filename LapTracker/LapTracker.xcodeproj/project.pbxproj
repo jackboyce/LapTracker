@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A21904E1E40F38E00AFAB45 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A21904D1E40F38E00AFAB45 /* MapKit.framework */; };
 		1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB331E3E917D005E2937 /* AppDelegate.swift */; };
 		1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB371E3E917D005E2937 /* Main.storyboard */; };
 		1AF7BB3C1E3E917D005E2937 /* LapTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB3A1E3E917D005E2937 /* LapTracker.xcdatamodeld */; };
@@ -154,6 +155,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A21904D1E40F38E00AFAB45 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		1AF7BB301E3E917D005E2937 /* LapTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF7BB331E3E917D005E2937 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AF7BB381E3E917D005E2937 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AF7BB9E1E3EBA4D005E2937 /* Locksmith.framework in Frameworks */,
+				1A21904E1E40F38E00AFAB45 /* MapKit.framework in Frameworks */,
 				1AF7BBE41E3FA934005E2937 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,6 +187,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A21904A1E40F29A00AFAB45 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1A21904D1E40F38E00AFAB45 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1AF7BB271E3E917C005E2937 = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +202,7 @@
 				1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */,
 				1AF7BB321E3E917D005E2937 /* LapTracker */,
 				1AF7BB311E3E917D005E2937 /* Products */,
+				1A21904A1E40F29A00AFAB45 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -287,8 +299,17 @@
 						DevelopmentTeam = WK367DXNJ2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 0;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+							com.apple.VPNLite = {
+								enabled = 0;
 							};
 						};
 					};

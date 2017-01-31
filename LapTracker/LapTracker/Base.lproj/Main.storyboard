@@ -136,7 +136,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PNa-Uc-bHj" id="Rb4-8g-YTU">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -165,12 +165,42 @@
                     <view key="view" contentMode="scaleToFill" id="Mny-Yb-P2D">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9sN-CT-Tmx">
+                                <rect key="frame" x="0.0" y="64" width="375" height="332"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrS-br-CqP">
+                                <rect key="frame" x="163" y="573" width="49" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Record"/>
+                                <connections>
+                                    <action selector="record:" destination="Wj9-yX-dC9" eventType="touchUpInside" id="0Lm-dB-Kth"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOA-wM-ImT">
+                                <rect key="frame" x="88" y="437" width="198" height="97"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9sN-CT-Tmx" firstAttribute="top" secondItem="eTg-9W-guo" secondAttribute="bottom" id="Fzq-zk-zFg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9sN-CT-Tmx" secondAttribute="trailing" constant="-16" id="cLG-1I-fKr"/>
+                            <constraint firstItem="sqk-up-ZV8" firstAttribute="top" secondItem="9sN-CT-Tmx" secondAttribute="bottom" constant="271" id="eba-1x-gDw"/>
+                            <constraint firstItem="9sN-CT-Tmx" firstAttribute="leading" secondItem="Mny-Yb-P2D" secondAttribute="leadingMargin" constant="-16" id="xfw-Rr-H2k"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="map" destination="9sN-CT-Tmx" id="Pe1-Md-QOr"/>
+                        <outlet property="tempLabel" destination="EOA-wM-ImT" id="YNX-Eq-5tA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xVJ-x3-N1d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2209" y="141"/>
+            <point key="canvasLocation" x="2208.8000000000002" y="139.880059970015"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="U8k-oR-doc">

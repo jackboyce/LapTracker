@@ -61,10 +61,12 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
         for location in locations {
             centerMapOnLocation(location: location)
-            print(location.coordinate.latitude)
-            print(location.coordinate.longitude)
+            //centerMapOnLocation(location: location)
+            //print(location.coordinate.latitude)
+            //print(location.coordinate.longitude)
             if location.horizontalAccuracy < 20 {
                 //update distance
                 if self.locations.count > 0 {
@@ -82,7 +84,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         // Here, the location manager will be lazily instantiated
         locationManager.startUpdatingLocation()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -95,15 +97,21 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(eachSecond), userInfo: nil, repeats: true)
         startLocationUpdates()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func stop(_ sender: Any) {
+        for location in locations {
+            print(location.coordinate.latitude)
+            print(location.coordinate.longitude)
+        }
     }
-    */
-
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

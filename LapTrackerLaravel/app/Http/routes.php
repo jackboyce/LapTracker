@@ -23,3 +23,4 @@ Route::post('/addTrack', 'TrackController@addTrack')->middleware('auth');
 Route::get('/getLocationsForTrack', 'TrackController@getLocationsForTrack')->middleware('auth');
 Route::post('/addLocation', 'TrackController@addLocation')->middleware('auth');
 Route::get('/authStatus', 'TrackController@authStatus');
+Route::get('/currentUserID', 'TrackController@currentUserID');

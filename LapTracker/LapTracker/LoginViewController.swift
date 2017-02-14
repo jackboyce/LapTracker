@@ -67,23 +67,21 @@ class LoginViewController: UIViewController {
     @IBAction func login(_ sender: Any) {
         errorLabel.text = ""
         save()
-        print("Before clear: \(ServerCommands.currentUser())")
+        print("Before clear: \(ServerCommands.currentUserEmail())")
         ServerCommands.clearUser() {
-            print("After clear: \(ServerCommands.currentUser())")
+            print("After clear: \(ServerCommands.currentUserEmail())")
             ServerCommands.login(email: self.email.text!, password: self.password.text!) { resp in
                 if(resp != nil){
                     //print(resp)
-                    print("After login: \(ServerCommands.currentUser())")
+                    print("After login: \(ServerCommands.currentUserEmail())")
                     self.segueToTracks()
                 }
             }
         }
     }
     
-    
-    
     func segueToTracks() {
-        let user = ServerCommands.currentUser()
+        let user = ServerCommands.currentUserEmail()
         
         if user == email.text! {
             let trackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Tracks") as! TrackTableViewController

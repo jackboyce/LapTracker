@@ -69,6 +69,15 @@ class TrackController extends Controller
         return $track->id;
     }
     
+    public function currentUserID()
+    {
+        if (Auth::check()) {
+            $id = Auth::user()->id;
+            return "$id";
+        }
+        return "none";
+    }
+    
     public function authStatus()
     {
         if (Auth::check()) {

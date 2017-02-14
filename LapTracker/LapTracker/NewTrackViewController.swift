@@ -31,6 +31,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     lazy var locations = [CLLocation]()
     lazy var timer = Timer()
     let regionRadius: CLLocationDistance = 1000
+    let pollRate = 0.1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +45,8 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         timer.invalidate()
     }
     
-    func eachSecond(timer: Timer) {
-        seconds += 1
+    func timeUpdate(timer: Timer) {
+        seconds += pollRate
         let secondsQuantity = HKQuantity(unit: HKUnit.second(), doubleValue: seconds)
         tempLabel.text = "Time: " + secondsQuantity.description
         let distanceQuantity = HKQuantity(unit: HKUnit.meter(), doubleValue: distance)
@@ -95,19 +96,21 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         seconds = 0.0
         distance = 0.0
         locations.removeAll(keepingCapacity: false)
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(eachSecond), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: pollRate, target: self, selector: #selector(timeUpdate), userInfo: nil, repeats: true)
         startLocationUpdates()
     }
     
     @IBAction func stop(_ sender: Any) {
         timer.invalidate()
+        tempLabel.text = ""
         /*for location in locations {
             print(location.coordinate.latitude)
             print(location.coordinate.longitude)
         }*/
-        ServerCommands.createTrackWithLocations(name: "apptest5", locations: locations) { resp in
+        /*
+        ServerCommands.addTrackWithLocations(name: "apptest5", locations: locations) { resp in
             print("sent all locations")
-        }
+        }*/
     }
     /*
      // MARK: - Navigation

@@ -7,10 +7,21 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\track;
 use App\location;
+use App\time;
 use Illuminate\Support\Facades\Auth;
 
 class TrackController extends Controller
 {
+    public function getUsernameFromID(Integer $id) {
+        $users = DB::table('users')->get();
+        foreach ($users as $user) {
+            if($user->id == $id) {
+                return $user->name;
+            }
+        }
+        return 'none';
+    }
+    
     public function getTracks() {
         $tracks = DB::table('tracks')->get();
         
@@ -45,6 +56,27 @@ class TrackController extends Controller
         }
     }
     
+    public function getTimesForTrack(Request $request) {
+        $times = DB::table('times')->get();
+        foreach ($times as $time) {
+            if($time->tracknumber == $request->id) {
+                echo $time->id;
+                echo ':';
+                echo $time->time;
+                echo ':';
+                
+                $users = DB::table('users')->get();
+                foreach ($users as $user) {
+                    if($user->id == $time->user) {
+                        echo $user->name;
+                    }
+                }
+                
+                echo "<html><br></html>";
+            }
+        }
+    }
+    
     public function addLocation(Request $request) {
         $location = new location();
         $location->latitude = $request->latitude;
@@ -52,16 +84,14 @@ class TrackController extends Controller
         $location->tracknumber = $request->tracknumber;
         $location->save();
     }
-    /*
-    public function getUserFromID(Integer $lookingID) {
-        $users = DB::table('users')->get();
-        foreach ($users as $user) {
-            if($user->id == $lookingID) {
-                return $user->name;
-            }
-        }
-        return 'none';
-    }*/
+    
+    public function addTime(Request $request) {
+        $time = new time();
+        $time->time = $request->time;
+        $time->user = $request->user;
+        $time->tracknumber = $request->tracknumber;
+        $time->save();
+    }
     
     public function addTrack(Request $request) {
         $track = new track();

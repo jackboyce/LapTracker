@@ -45,7 +45,7 @@ class ServerCommands {
      }
     */
     
-    public static func createTrackWithLocations(name: String, locations: [CLLocation], completionHandler: @escaping (String?) -> ()) -> () {
+    public static func addTrackWithLocations(name: String, locations: [CLLocation], completionHandler: @escaping (String?) -> ()) -> () {
         ServerCommands.addTrack(name: "\(name)") { resp in
             if(resp != nil) {
                 print(resp)
@@ -68,6 +68,18 @@ class ServerCommands {
         let payload = ["latitude": "\(latitude)", "longitude": "\(longitude)", "tracknumber": "\(tracknumber)"] as [String : Any]
         
         let loginurl = "\(ServerCommands.homeURL)/addLocation"
+        Alamofire.request(loginurl, method: .post, parameters: payload).responseString {
+            (response) in
+            
+            let resp = response.result.value
+            completionHandler(resp)
+        }
+    }
+    
+    public static func addTime(time: Double, user: Int, tracknumber: Int, completionHandler: @escaping (String?) -> ()) -> () {
+        let payload = ["time": "\(time)", "user": "\(user)", "tracknumber": "\(tracknumber)"] as [String : Any]
+        
+        let loginurl = "\(ServerCommands.homeURL)/addTime"
         Alamofire.request(loginurl, method: .post, parameters: payload).responseString {
             (response) in
             

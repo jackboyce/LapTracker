@@ -12,6 +12,7 @@ import CoreLocation
 import HealthKit
 
 class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
+    
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     var seconds = 0.0
@@ -99,6 +100,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func stop(_ sender: Any) {
+        timer.invalidate()
         for location in locations {
             print(location.coordinate.latitude)
             print(location.coordinate.longitude)

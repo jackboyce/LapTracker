@@ -45,23 +45,24 @@ class ServerCommands {
      }
     */
     
-    public static func createTrackWithLocations(name: String, locations: [CLLocation]) {
-        ServerCommands.addTrack(name: "\(name)") {resp in
-            if(resp != nil){
+    public static func createTrackWithLocations(name: String, locations: [CLLocation], completionHandler: @escaping (String?) -> ()) -> () {
+        ServerCommands.addTrack(name: "\(name)") { resp in
+            if(resp != nil) {
                 print(resp)
                 for location in locations {
-                    ServerCommands.addLocation(latitude: Double(location.coordinate.latitude), longitude: Double(location.coordinate.longitude), tracknumber: Int(resp!)!) {resp in
-                        if(resp != nil){
-                            print(resp)
+                    ServerCommands.addLocation(latitude: Double(location.coordinate.latitude), longitude: Double(location.coordinate.longitude), tracknumber: Int(resp!)!) { resp in
+                        if(resp != nil) {
+                            //print(resp)
                         }
                     }
                 }
+                completionHandler(resp)
             }
         }
     }
     /*
      ServerCommands.createTrackWithLocations(name: "apptest3", locations: locations)
-     */
+    */
     
     public static func addLocation(latitude: Double, longitude: Double, tracknumber: Int, completionHandler: @escaping (String?) -> ()) -> () {
         let payload = ["latitude": "\(latitude)", "longitude": "\(longitude)", "tracknumber": "\(tracknumber)"] as [String : Any]

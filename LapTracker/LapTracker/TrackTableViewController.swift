@@ -38,16 +38,6 @@ class TrackTableViewController: UITableViewController {
     
     func downloadPressed() {
         print("Pressed")
-        ServerCommands.addTrack(name: "apptest2") {resp in
-            if(resp != nil){
-                print(resp)
-                ServerCommands.addLocation(latitude: 13.444444444, longitude: 98.2222222222, tracknumber: Int(resp!)!) {resp in
-                    if(resp != nil){
-                        print(resp)
-                    }
-                }
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {

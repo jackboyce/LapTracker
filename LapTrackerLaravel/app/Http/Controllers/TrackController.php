@@ -35,8 +35,10 @@ class TrackController extends Controller
         $locations = DB::table('locations')->get();
         foreach ($locations as $location) {
             if($location->tracknumber == $request->id) {
+                echo $location->id;
+                echo ':';
                 echo $location->latitude;
-                echo ' ';
+                echo ':';
                 echo $location->longitude;
                 echo "<html><br></html>";
             }

@@ -101,9 +101,12 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func stop(_ sender: Any) {
         timer.invalidate()
-        for location in locations {
+        /*for location in locations {
             print(location.coordinate.latitude)
             print(location.coordinate.longitude)
+        }*/
+        ServerCommands.createTrackWithLocations(name: "apptest5", locations: locations) { resp in
+            print("sent all locations")
         }
     }
     /*

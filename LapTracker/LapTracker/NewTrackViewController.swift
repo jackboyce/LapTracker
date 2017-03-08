@@ -55,6 +55,8 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         let paceUnit = HKUnit.second().unitDivided(by: HKUnit.meter())
         let paceQuantity = HKQuantity(unit: paceUnit, doubleValue: seconds / distance)
         tempLabel.text = tempLabel.text! + "\nPace: " + paceQuantity.description
+        
+        //loadMap()
     }
     
     func centerMapOnLocation(location: CLLocation) {
@@ -63,18 +65,23 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         for location in locations {
-            centerMapOnLocation(location: location)
-            //centerMapOnLocation(location: location)
-            //print(location.coordinate.latitude)
-            //print(location.coordinate.longitude)
-            if location.horizontalAccuracy < 20 {
+            let howRecent = location.timestamp.timeIntervalSinceNow
+            
+            if abs(howRecent) < 10 && location.horizontalAccuracy < 20 {
                 //update distance
                 if self.locations.count > 0 {
                     distance += location.distance(from: self.locations.last!)
+                    
+                    var coords = [CLLocationCoordinate2D]()
+                    coords.append(self.locations.last!.coordinate)
+                    coords.append(location.coordinate)
+                    
+                    let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
+                    map.setRegion(region, animated: true)
+                    
+                    map.add(MKPolyline(coordinates: &coords, count: coords.count))
                 }
-                
                 
                 //save location
                 self.locations.append(location)
@@ -103,6 +110,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func stop(_ sender: Any) {
         timer.invalidate()
         tempLabel.text = ""
+        loadMap()
         /*for location in locations {
             print(location.coordinate.latitude)
             print(location.coordinate.longitude)
@@ -111,6 +119,67 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         ServerCommands.addTrackWithLocations(name: "apptest5", locations: locations) { resp in
             print("sent all locations")
         }*/
+    }
+    
+    func mapRegion() -> MKCoordinateRegion {
+        
+        var minLat = locations[0].coordinate.latitude
+        var minLng = locations[0].coordinate.longitude
+        var maxLat = minLat
+        var maxLng = minLng
+        
+        for location in locations {
+            minLat = min(minLat, location.coordinate.latitude)
+            minLng = min(minLng, location.coordinate.longitude)
+            maxLat = max(maxLat, location.coordinate.latitude)
+            maxLng = max(maxLng, location.coordinate.longitude)
+        }
+        
+        return MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2, longitude: (minLng + maxLng)/2),
+            span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLng - minLng)*1.1))
+    }
+    /*
+    
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if !overlay.isKind(of: MKPolyline.self) {
+            return nil
+        }
+        
+        let polyline = overlay as! MKPolyline
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.strokeColor = UIColor.black
+        renderer.lineWidth = 5
+        return renderer
+    }*/
+    
+    func polyline() -> MKPolyline {
+        var coords = [CLLocationCoordinate2D]()
+        
+        for location in locations {
+            coords.append(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+        }
+        return MKPolyline(coordinates: &coords, count: locations.count)
+    }
+    
+    func loadMap() {
+        if locations.count > 0 {
+            map.isHidden = false
+            
+            // Set the map bounds
+            map.region = mapRegion()
+            
+            // Make the line(s!) on the map
+            map.add(polyline())
+        } else {
+            // No locations were found!
+            map.isHidden = true
+            
+            UIAlertView(title: "Error",
+                        message: "Sorry, this run has no locations saved",
+                        delegate:nil,
+                        cancelButtonTitle: "OK").show()
+        }
     }
     /*
      // MARK: - Navigation
@@ -122,4 +191,17 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
      }
      */
     
+}
+extension NewTrackViewController: MKMapViewDelegate {
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if !overlay.isKind(of: MKPolyline.self) {
+            return nil
+        }
+        
+        let polyline = overlay as! MKPolyline
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.strokeColor = UIColor.blue
+        renderer.lineWidth = 3
+        return renderer
+    }
 }

@@ -118,7 +118,40 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func savePressed() {
+        //print(ServerCommands.getTracks())
+        promptFor(title: "Name", message: "Enter name for track", placeholder: "Track Name") { resp in
+            ServerCommands.addTrackWithLocations(name: resp!, locations: self.locations) { resp in
+                print("sent all locations")
+                //print(resp!)
+                ServerCommands.addTime(time: self.seconds, user: Int(ServerCommands.currentUserID())!, tracknumber: Int(resp!)!) { resp in
+                    print(resp)
+                }
+            }
+        }
+    }
+    
+    func promptFor(title: String, message: String, placeholder: String, completionHandler: @escaping (String?) -> ()) -> () {
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.placeholder = placeholder
+        }
+        
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            //print("Text field: \(textField?.text)")
+            let resp = alert?.textFields![0].text
+            completionHandler(resp)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak alert] (_) in
+        }))
+        
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
     }
     
     func endRecording() {

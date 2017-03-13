@@ -24,21 +24,20 @@ class TrackController extends Controller
     
     public function getTracks() {
         $tracks = DB::table('tracks')->get();
-        
         $users = DB::table('users')->get();
         //return view('track.index', ['tracks' => $tracks]);
         foreach ($tracks as $track) {
             echo $track->id;
-            echo ' ';
+            echo ',';
             echo $track->name;
-            echo ' ';
+            echo ',';
             //echo $this->getUserFromID((int) ($track->createdby));
             foreach ($users as $user) {
                 if($user->id == $track->createdby) {
                     echo $user->name;
                 }
             }
-            echo "<html><br></html>";
+            echo "][";
         }
     }
     
@@ -47,11 +46,11 @@ class TrackController extends Controller
         foreach ($locations as $location) {
             if($location->tracknumber == $request->id) {
                 echo $location->id;
-                echo ':';
+                echo ',';
                 echo $location->latitude;
-                echo ':';
+                echo ',';
                 echo $location->longitude;
-                echo "<html><br></html>";
+                echo "][";
             }
         }
     }
@@ -61,9 +60,9 @@ class TrackController extends Controller
         foreach ($times as $time) {
             if($time->tracknumber == $request->id) {
                 echo $time->id;
-                echo ':';
+                echo ',';
                 echo $time->time;
-                echo ':';
+                echo ',';
                 
                 $users = DB::table('users')->get();
                 foreach ($users as $user) {
@@ -72,7 +71,7 @@ class TrackController extends Controller
                     }
                 }
                 
-                echo "<html><br></html>";
+                echo "][";
             }
         }
     }

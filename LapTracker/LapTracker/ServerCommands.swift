@@ -102,6 +102,48 @@ class ServerCommands {
         var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "\(homeURL)/currentUserID") as! URL)
         return NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
     }
+    
+    public static func getLocationsForTrack(id: Int) -> [CLLocation] {
+        var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "\(homeURL)/getLocationsForTrack?id=\(id)") as! URL)
+        let raw = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+        var rawLocations = raw.components(separatedBy: "][")
+        rawLocations.removeLast()
+        var locations = [CLLocation]()
+        
+        for location in rawLocations {
+            let splitRawLocation = location.components(separatedBy: ",")
+            locations.append(CLLocation(latitude: Double(splitRawLocation[1])!, longitude: Double(splitRawLocation[2])!))
+        }
+        return locations
+    }
+    
+    public static func getTimesForTrack(id: Int) -> [(time: Double, username: String)] {
+        var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "\(homeURL)/getTimesForTrack?id=\(id)") as! URL)
+        let raw = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+        var rawTimes = raw.components(separatedBy: "][")
+        rawTimes.removeLast()
+        var times = [(time: Double, username: String)]()
+        
+        for time in rawTimes {
+            let splitRawTime = time.components(separatedBy: ",")
+            times.append((time: Double(splitRawTime[1])!, username: splitRawTime[2]))
+        }
+        return times
+    }
+    
+    public static func getTracks() -> [(id: Int, name: String, creator: String)] {
+        var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "\(homeURL)/getTracks") as! URL)
+        let raw = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+        var rawTracks = raw.components(separatedBy: "][")
+        rawTracks.removeLast()
+        var tracks = [(id: Int, name: String, creator: String)]()
+        
+        for track in rawTracks {
+            let splitRawTrack = track.components(separatedBy: ",")
+            tracks.append((id: Int(splitRawTrack[0])!, name: splitRawTrack[1], creator: splitRawTrack[2]))
+        }
+        return tracks
+    }
 }
 
 

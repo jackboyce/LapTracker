@@ -35,7 +35,8 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        map.delegate = self
+
         // Do any additional setup after loading the view.
         locationManager.requestAlwaysAuthorization()
     }
@@ -105,20 +106,35 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         locations.removeAll(keepingCapacity: false)
         timer = Timer.scheduledTimer(timeInterval: pollRate, target: self, selector: #selector(timeUpdate), userInfo: nil, repeats: true)
         startLocationUpdates()
+        
+        navigationItem.rightBarButtonItem = nil
     }
     
     @IBAction func stop(_ sender: Any) {
-        timer.invalidate()
-        tempLabel.text = ""
+        endRecording()
         loadMap()
-        /*for location in locations {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(savePressed))
+    }
+    
+    func savePressed() {
+        
+    }
+    
+    func endRecording() {
+        timer.invalidate()
+        locationManager.stopUpdatingLocation()
+        tempLabel.text = ""
+    }
+    
+    func sendRecording() {
+        for location in locations {
             print(location.coordinate.latitude)
             print(location.coordinate.longitude)
-        }*/
-        /*
-        ServerCommands.addTrackWithLocations(name: "apptest5", locations: locations) { resp in
+        }
+        ServerCommands.addTrackWithLocations(name: "apptest6", locations: locations) { resp in
             print("sent all locations")
-        }*/
+        }
     }
     
     func mapRegion() -> MKCoordinateRegion {
@@ -139,19 +155,6 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
             center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2, longitude: (minLng + maxLng)/2),
             span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLng - minLng)*1.1))
     }
-    /*
-    
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if !overlay.isKind(of: MKPolyline.self) {
-            return nil
-        }
-        
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.black
-        renderer.lineWidth = 5
-        return renderer
-    }*/
     
     func polyline() -> MKPolyline {
         var coords = [CLLocationCoordinate2D]()
@@ -193,7 +196,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     
 }
 extension NewTrackViewController: MKMapViewDelegate {
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
         if !overlay.isKind(of: MKPolyline.self) {
             return nil
         }

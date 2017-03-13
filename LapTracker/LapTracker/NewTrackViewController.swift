@@ -88,6 +88,12 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
                 self.locations.append(location)
             }
         }
+        
+        if self.locations.count > 10 {
+            if Int(self.locations[0].distance(from: self.locations[self.locations.count-1])) <= 10 {
+                stop(self)
+            }
+        }
     }
     
     func startLocationUpdates() {

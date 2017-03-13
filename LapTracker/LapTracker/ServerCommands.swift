@@ -12,7 +12,7 @@ import CoreLocation
 
 class ServerCommands {
     
-    public static let homeURL: String = "http://localhost:8000"
+    public static let homeURL: String = "http://45.55.180.218"
     
     public static func login(email: String, password: String, completionHandler: @escaping (String?) -> ()) -> () {
         let payload = ["email": "\(email)", "password": "\(password)"] as [String : Any]

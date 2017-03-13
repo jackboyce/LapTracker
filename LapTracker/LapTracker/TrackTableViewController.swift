@@ -10,6 +10,8 @@ import UIKit
 
 class TrackTableViewController: UITableViewController {
 
+    var tracks: [Track] = [Track]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,12 +24,14 @@ class TrackTableViewController: UITableViewController {
         center.setTitle("Download", for: UIControlState.normal)
         center.addTarget(self, action: #selector(downloadPressed), for: UIControlEvents.touchUpInside)
         self.navigationItem.titleView = center
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        for tupleTrack in ServerCommands.getTracks() {
+            tracks.append(Track(id: tupleTrack.id, name: tupleTrack.name, creator: tupleTrack.creator))
+        }
     }
     
     func addPressed() {
@@ -47,25 +51,30 @@ class TrackTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    /*
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 0
-    }
+    }*/
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return tracks.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellidentifier", for: indexPath)
+        
+        cell.textLabel?.text = tracks[indexPath.row].name
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        print("Selected \(tracks[indexPath.row].name)")
+    }
+
+    
 
     /*
     // Override to support conditional editing of the table view.

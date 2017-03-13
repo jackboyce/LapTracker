@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A21904E1E40F38E00AFAB45 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A21904D1E40F38E00AFAB45 /* MapKit.framework */; };
+		1ACF2F7E1E770FEB0015CF12 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F7D1E770FEB0015CF12 /* Track.swift */; };
 		1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB331E3E917D005E2937 /* AppDelegate.swift */; };
 		1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB371E3E917D005E2937 /* Main.storyboard */; };
 		1AF7BB3C1E3E917D005E2937 /* LapTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB3A1E3E917D005E2937 /* LapTracker.xcdatamodeld */; };
@@ -156,6 +157,7 @@
 
 /* Begin PBXFileReference section */
 		1A21904D1E40F38E00AFAB45 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		1ACF2F7D1E770FEB0015CF12 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		1AF7BB301E3E917D005E2937 /* LapTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF7BB331E3E917D005E2937 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AF7BB381E3E917D005E2937 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				1AF7BB4B1E3EA4A0005E2937 /* RegisterViewController.swift */,
 				1AF7BB4D1E3EA4BE005E2937 /* LoginViewController.swift */,
 				1AF7BBB01E3FA5CE005E2937 /* ServerCommands.swift */,
+				1ACF2F7D1E770FEB0015CF12 /* Track.swift */,
 				1AF7BB3D1E3E917D005E2937 /* Assets.xcassets */,
 				1AF7BB3F1E3E917D005E2937 /* LaunchScreen.storyboard */,
 				1AF7BB421E3E917D005E2937 /* Info.plist */,
@@ -465,6 +468,7 @@
 				1AF7BBB11E3FA5CE005E2937 /* ServerCommands.swift in Sources */,
 				1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */,
 				1AF7BB3C1E3E917D005E2937 /* LapTracker.xcdatamodeld in Sources */,
+				1ACF2F7E1E770FEB0015CF12 /* Track.swift in Sources */,
 				1AF7BBA51E3EBC2D005E2937 /* TrackTableViewController.swift in Sources */,
 				1AF7BBE91E3FD733005E2937 /* NewTrackViewController.swift in Sources */,
 				1AF7BB4E1E3EA4BE005E2937 /* LoginViewController.swift in Sources */,

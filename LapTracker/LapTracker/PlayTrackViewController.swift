@@ -41,6 +41,8 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         //load the track overlay
         map.delegate = self
         loadMap()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,6 +55,13 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         recording = !recording
         
         recording ? start() : stop()
+    }
+    
+    func leaderboardPressed() {
+        print("press")
+        let leaderboardTrackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Leaderboard") as! LeaderboardTableViewController
+        leaderboardTrackViewController.track = track
+        self.navigationController?.pushViewController(leaderboardTrackViewController, animated: true)
     }
     
     func start() {
@@ -74,12 +83,12 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 
                 //Before the phone gets to the beggining to the track
                 if step == 0 {
-                    instructionBox.text = "Procede to the starting location"
+                    instructionBox.text = "Proceed to the starting location"
                     
                     //If the phone gets to the first location of the track
                     if track.locations[0].distance(from: location) < 10 {
                         step += 1
-                        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true);
+                        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
                         currentTargetLocation = 1
                     }
                 }

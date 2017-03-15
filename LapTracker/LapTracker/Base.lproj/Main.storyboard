@@ -212,10 +212,10 @@
             </objects>
             <point key="canvasLocation" x="2208.8000000000002" y="139.880059970015"/>
         </scene>
-        <!--View Controller-->
+        <!--Play Track View Controller-->
         <scene sceneID="eag-Po-b2y">
             <objects>
-                <viewController storyboardIdentifier="PlayTrack" id="lPh-Eq-TyX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayTrack" id="lPh-Eq-TyX" customClass="PlayTrackViewController" customModule="LapTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XF1-ZQ-iGI"/>
                         <viewControllerLayoutGuide type="bottom" id="m0I-c0-zek"/>
@@ -223,12 +223,59 @@
                     <view key="view" contentMode="scaleToFill" id="SvJ-eZ-HaA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mP1-Uv-wru">
+                                <rect key="frame" x="0.0" y="64" width="375" height="346"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdc-44-cjm">
+                                <rect key="frame" x="158" y="571" width="52" height="30"/>
+                                <state key="normal" title="Start"/>
+                                <connections>
+                                    <action selector="actionButton:" destination="lPh-Eq-TyX" eventType="touchUpInside" id="FEA-gI-Z18"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OB-qS-FSs">
+                                <rect key="frame" x="16" y="489" width="118" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRE-He-aDD">
+                                <rect key="frame" x="13" y="418" width="343" height="63"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="bRE-He-aDD" secondAttribute="trailing" constant="3" id="4KH-Ah-w9b"/>
+                            <constraint firstItem="bRE-He-aDD" firstAttribute="top" secondItem="mP1-Uv-wru" secondAttribute="bottom" constant="8" id="7I4-kD-te4"/>
+                            <constraint firstItem="m0I-c0-zek" firstAttribute="top" secondItem="8OB-qS-FSs" secondAttribute="bottom" constant="139" id="CM0-wE-y66"/>
+                            <constraint firstItem="mP1-Uv-wru" firstAttribute="top" secondItem="XF1-ZQ-iGI" secondAttribute="bottom" id="Dm3-9Z-jb1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="8OB-qS-FSs" secondAttribute="trailing" constant="225" id="EmE-lv-g2K"/>
+                            <constraint firstItem="m0I-c0-zek" firstAttribute="top" secondItem="bRE-He-aDD" secondAttribute="bottom" constant="186" id="KC5-kU-1qG"/>
+                            <constraint firstItem="bRE-He-aDD" firstAttribute="leading" secondItem="SvJ-eZ-HaA" secondAttribute="leadingMargin" constant="-3" id="OA9-hF-ZJ9"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="8OB-qS-FSs" secondAttribute="leading" id="bh1-6C-5SZ"/>
+                            <constraint firstItem="m0I-c0-zek" firstAttribute="top" secondItem="mP1-Uv-wru" secondAttribute="bottom" constant="257" id="dgH-C9-FL2"/>
+                            <constraint firstItem="m0I-c0-zek" firstAttribute="top" secondItem="tdc-44-cjm" secondAttribute="bottom" constant="66" id="dps-RO-2xx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mP1-Uv-wru" secondAttribute="trailing" constant="-16" id="gnd-GO-xM3"/>
+                            <constraint firstItem="tdc-44-cjm" firstAttribute="centerX" secondItem="SvJ-eZ-HaA" secondAttribute="centerX" id="hfD-v9-Nyx"/>
+                            <constraint firstItem="8OB-qS-FSs" firstAttribute="top" secondItem="bRE-He-aDD" secondAttribute="bottom" constant="8" id="mUT-Yg-y6N"/>
+                            <constraint firstItem="tdc-44-cjm" firstAttribute="top" secondItem="8OB-qS-FSs" secondAttribute="bottom" constant="43" id="z4b-kT-rDa"/>
+                            <constraint firstItem="mP1-Uv-wru" firstAttribute="leading" secondItem="SvJ-eZ-HaA" secondAttribute="leadingMargin" constant="-16" id="zJb-se-38U"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="button" destination="tdc-44-cjm" id="4uP-ZM-504"/>
+                        <outlet property="instructionBox" destination="bRE-He-aDD" id="9Qq-5E-D90"/>
+                        <outlet property="map" destination="mP1-Uv-wru" id="MP3-wq-4Fz"/>
+                        <outlet property="timeLabel" destination="8OB-qS-FSs" id="jDL-KE-DKL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zzi-vE-zgk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2209" y="815"/>
+            <point key="canvasLocation" x="2208.8000000000002" y="814.54272863568224"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="U8k-oR-doc">

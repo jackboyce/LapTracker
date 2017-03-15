@@ -129,7 +129,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
             ServerCommands.addTrackWithLocations(name: resp!, locations: self.locations) { resp in
                 print("sent all locations")
                 //print(resp!)
-                ServerCommands.addTime(time: self.seconds, user: Int(ServerCommands.currentUserID())!, tracknumber: Int(resp!)!) { resp in
+                ServerCommands.addTime(time: self.seconds, tracknumber: Int(resp!)!) { resp in
                     print(resp)
                 }
             }

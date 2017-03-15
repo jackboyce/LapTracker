@@ -42,6 +42,7 @@ class TrackTableViewController: UITableViewController {
     
     func downloadPressed() {
         print("Pressed")
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,6 +73,9 @@ class TrackTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         print("Selected \(tracks[indexPath.row].name)")
+        let playTrackViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayTrack") as! PlayTrackViewController
+        playTrackViewController.track = tracks[indexPath.row]
+        self.navigationController?.pushViewController(playTrackViewController, animated: true)
     }
 
     

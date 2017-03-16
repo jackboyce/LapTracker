@@ -101,7 +101,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                     
                     
                     //If the phone gets to the last location of the track
-                    if Double((track.locations.last?.distance(from: location))!) < 10 {
+                    if Double((track.locations.last?.distance(from: location))!) < 10 && time > 5{
                         step += 1
                         ServerCommands.addTime(time: time, tracknumber: track.id) { resp in
                             print("send info")

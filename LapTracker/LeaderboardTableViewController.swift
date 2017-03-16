@@ -22,6 +22,9 @@ class LeaderboardTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         times = ServerCommands.getTimesForTrack(id: track.id)
+        times.sort {
+            return $0.0 < $1.0
+        }
     }
 
     override func didReceiveMemoryWarning() {

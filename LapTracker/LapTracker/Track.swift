@@ -14,6 +14,7 @@ class Track {
     var name: String = ""
     var creator: String = ""
     var locations: [CLLocation] {
+        
         return ServerCommands.getLocationsForTrack(id : id)
     }
     var times : [(time: Double, username: String)] {

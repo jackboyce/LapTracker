@@ -84,6 +84,21 @@ class TrackController extends Controller
         $location->save();
     }
     
+    public function addLocations(Request $request) {
+        $string = $request->locations;
+        $tracknumber = $request->tracknumber;
+        $arr1 = explode("][", $string);
+        
+        foreach ($arr1 as &$value) {
+            $arr2 = explode(",", $value);
+            $location = new location();
+            $location->latitude = $arr2->$arr2[0]
+            $location->longitude = $arr2->$arr2[1]
+            $location->tracknumber = $tracknumber;
+            $location->save();
+        }
+    }
+    
     public function addTime(Request $request) {
         $time = new time();
         $time->time = $request->time;

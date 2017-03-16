@@ -66,6 +66,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locations.sorted(by: {$0.timestamp.timeIntervalSinceNow < $1.timestamp.timeIntervalSinceNow})
         for location in locations {
             let howRecent = location.timestamp.timeIntervalSinceNow
             
@@ -83,9 +84,9 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
                     
                     map.add(MKPolyline(coordinates: &coords, count: coords.count))
                 }
-                
                 //save location
                 self.locations.append(location)
+                //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: 10))
             }
         }
         
@@ -119,18 +120,25 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func stop(_ sender: Any) {
         endRecording()
         loadMap()
-        
+        var tempCount = 0
+        print("number of locations is: \(locations.count)")
+        /*
+        for location in locations {
+            map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(10 + tempCount))))
+            tempCount += 2
+        }*/
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(savePressed))
     }
     
     func savePressed() {
         //print(ServerCommands.getTracks())
+        //locations.sort(by: {$0.timestamp < $1.timestamp})
         promptFor(title: "Name", message: "Enter name for track", placeholder: "Track Name") { resp in
             ServerCommands.addTrackWithLocations(name: resp!, locations: self.locations) { resp in
                 print("sent all locations")
                 //print(resp!)
                 ServerCommands.addTime(time: self.seconds, tracknumber: Int(resp!)!) { resp in
-                    print(resp)
+                    //print(resp)
                 }
             }
         }
@@ -236,14 +244,24 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
 }
 extension NewTrackViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if !overlay.isKind(of: MKPolyline.self) {
-            return nil
+        /*if !overlay.isKind(of: MKPolyline.self) {
+         return nil
+         }*/
+        
+        if let overlay = overlay as? MKCircle {
+            let circleRenderer = MKCircleRenderer(circle: overlay)
+            circleRenderer.fillColor = UIColor.red
+            return circleRenderer
         }
         
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 3
-        return renderer
+        if let overlay = overlay as? MKPolyline {
+            let polyline = overlay as! MKPolyline
+            let renderer = MKPolylineRenderer(polyline: polyline)
+            renderer.strokeColor = UIColor.blue
+            renderer.lineWidth = 3
+            return renderer
+        }
+        
+        return nil
     }
 }

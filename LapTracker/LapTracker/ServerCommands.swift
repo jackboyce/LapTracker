@@ -49,12 +49,21 @@ class ServerCommands {
         ServerCommands.addTrack(name: "\(name)") { resp in
             if(resp != nil) {
                 //print(resp)
+                var sendString = ""
                 for location in locations {
-                    ServerCommands.addLocation(latitude: Double(location.coordinate.latitude), longitude: Double(location.coordinate.longitude), tracknumber: Int(resp!)!) { resp in
-                        if(resp != nil) {
-                            //print(resp)
-                        }
-                    }
+                    sendString += String(location.coordinate.latitude)
+                    sendString += ","
+                    sendString += String(location.coordinate.longitude)
+                    sendString += "]["
+                }
+                print("Send the send string here")
+                var string = "37.33523566,-122.03254863][37.3351212,-122.03256229][37.33503868,-122.03265072][37.33497737,-122.03281282][37.33494812,-122.0329212][37.33492222,-122.03304215][37.33489242,-122.03318372][37.33485843,-122.03334424][37.33482105,-122.03350886]["
+                /*
+                ServerCommands.addLocations(string: sendString, tracknumber: Int(resp!)!) { resp in
+                    print(resp)
+                }*/
+                ServerCommands.addLocations(string: sendString, tracknumber: Int(resp!)!) { resp in
+                    print(resp)
                 }
                 completionHandler(resp)
             }
@@ -68,6 +77,20 @@ class ServerCommands {
         let payload = ["latitude": "\(latitude)", "longitude": "\(longitude)", "tracknumber": "\(tracknumber)"] as [String : Any]
         
         let loginurl = "\(ServerCommands.homeURL)/addLocation"
+        Alamofire.request(loginurl, method: .post, parameters: payload).responseString {
+            (response) in
+            
+            let resp = response.result.value
+            completionHandler(resp)
+        }
+    }
+    
+    public static func addLocations(string: String, tracknumber: Int, completionHandler: @escaping (String?) -> ()) -> () {
+        var truncatedString = string.substring(to: string.index(string.endIndex, offsetBy: -2))
+        print("Tracknumber: \(tracknumber)")
+        print("String send: \(truncatedString)")
+        let payload = ["locations": "\(truncatedString)", "tracknumber": "\(tracknumber)"] as [String : Any]
+        let loginurl = "\(ServerCommands.homeURL)/addLocations"
         Alamofire.request(loginurl, method: .post, parameters: payload).responseString {
             (response) in
             

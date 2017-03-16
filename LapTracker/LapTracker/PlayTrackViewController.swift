@@ -31,7 +31,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         _locationManager.activityType = .other
         
         // Movement threshold for new events
-        _locationManager.distanceFilter = 10.0
+        _locationManager.distanceFilter = 1.0
         return _locationManager
     }()
     
@@ -43,6 +43,15 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         loadMap()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
+        
+        var tempCount = 0
+        
+        /*
+        for location in track.locations {
+            map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(10 + tempCount))))
+            //tempCount += 2
+        }*/
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,6 +106,8 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 if step == 1 {
                     instructionBox.text = "Follow the line \(currentTargetLocation)"
                     
+                    
+                    
                     //Add something for if the phone gets off track
                     
                     
@@ -119,6 +130,13 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 //If the phone gets off track
                 if step == 3 {
                     
+                }
+            }
+            
+            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10{
+                if currentTargetLocation < track.locations.count {
+                    map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation].coordinate.latitude, longitude: track.locations[currentTargetLocation].coordinate.longitude), radius: 10))
+                    currentTargetLocation += 1
                 }
             }
         }
@@ -176,12 +194,27 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         return MKPolyline(coordinates: &coords, count: track.locations.count)
     }
     
+    func circleOnLocations() -> [MKCircle] {
+        var coords = [CLLocationCoordinate2D]()
+        var ret: [MKCircle] = [MKCircle]()
+        
+        for location in track.locations {
+            coords.append(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+            ret.append(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: 10))
+        }
+        return ret
+    }
+    
     func loadMap() {
         if track.locations.count > 0 {
             map.isHidden = false
-            
             // Set the map bounds
             map.region = mapRegion()
+            
+            /*
+            for element in circleOnLocations() {
+                map.add(element)
+            }*/
             
             // Make the line(s!) on the map
             map.add(polyline())
@@ -209,14 +242,24 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
 }
 extension PlayTrackViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if !overlay.isKind(of: MKPolyline.self) {
+        /*if !overlay.isKind(of: MKPolyline.self) {
             return nil
+        }*/
+        
+        if let overlay = overlay as? MKCircle {
+            let circleRenderer = MKCircleRenderer(circle: overlay)
+            circleRenderer.fillColor = UIColor.red
+            return circleRenderer
         }
         
-        let polyline = overlay as! MKPolyline
-        let renderer = MKPolylineRenderer(polyline: polyline)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 3
-        return renderer
+        if let overlay = overlay as? MKPolyline {
+            let polyline = overlay as! MKPolyline
+            let renderer = MKPolylineRenderer(polyline: polyline)
+            renderer.strokeColor = UIColor.blue
+            renderer.lineWidth = 3
+            return renderer
+        }
+        
+        return nil
     }
 }

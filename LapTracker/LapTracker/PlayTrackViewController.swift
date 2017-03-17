@@ -127,10 +127,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                     instructionBox.text = "Follow the line \(currentTargetLocation)"
                     
                     //Add something for if the phone gets off track
-                    /*
-                    if Double(track.locations[currentTargetLocation].distance(from: location)) > Double(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation])) {
-                        print("Outside")
-                    }*/
+                    
                     
                     //If the phone gets to the last location of the track relative to array positions
                     if Double((track.locations.last?.distance(from: location))!) < 10 && currentTargetLocation == track.locations.count - 1 && !startingPositon {

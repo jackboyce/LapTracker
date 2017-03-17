@@ -17,13 +17,15 @@ class TrackTableViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
         
+        /*
         let center = UIButton(type: UIButtonType.custom) as UIButton
         center.frame = CGRect(x:0, y:0, width: 100, height: 40) as CGRect
         center.setTitleColor(UIColor.init(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0), for: UIControlState.normal)
         center.setTitleColor(UIColor.white, for: UIControlState.highlighted)
         center.setTitle("Download", for: UIControlState.normal)
         center.addTarget(self, action: #selector(downloadPressed), for: UIControlEvents.touchUpInside)
-        self.navigationItem.titleView = center
+        self.navigationItem.titleView = center*/
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -42,10 +44,6 @@ class TrackTableViewController: UITableViewController {
     
     func downloadPressed() {
         print("Pressed")
-        var string = "37.33523566,-122.03254863][37.3351212,-122.03256229][37.33503868,-122.03265072][37.33497737,-122.03281282][37.33494812,-122.0329212][37.33492222,-122.03304215][37.33489242,-122.03318372][37.33485843,-122.03334424][37.33482105,-122.03350886]["
-        ServerCommands.addLocations(string: string, tracknumber: 48) { resp in
-            print(resp)
-        }
     }
 
     override func didReceiveMemoryWarning() {

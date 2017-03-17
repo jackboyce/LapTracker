@@ -23,6 +23,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     var time = 0.0
     var timerInterval = 0.1
     var currentTargetLocation = 0
+    var startingPositon = false //false if the person starts on the origional side and true if they are going in reverse
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -31,22 +32,30 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         _locationManager.activityType = .other
         
         // Movement threshold for new events
-        _locationManager.distanceFilter = 1.0
+        _locationManager.distanceFilter = 10.0
         return _locationManager
     }()
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        timer.invalidate()
+        locationManager.stopUpdatingLocation()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //load the track overlay
         map.delegate = self
+        instructionBox.text = ""
+        timeLabel.text = ""
         loadMap()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
         
+        /*
         var tempCount = 0
         
-        /*
+        
         for location in track.locations {
             map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(10 + tempCount))))
             //tempCount += 2
@@ -75,6 +84,9 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     
     func start() {
         print("Start")
+        step = 0
+        time = 0.0
+        currentTargetLocation = 0
         locationManager.startUpdatingLocation()
     }
     
@@ -94,11 +106,19 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 if step == 0 {
                     instructionBox.text = "Proceed to the starting location"
                     
-                    //If the phone gets to the first location of the track
+                    //If the phone gets to the first location of the track locations array
                     if track.locations[0].distance(from: location) < 10 {
                         step += 1
-                        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+                        startTimer()
+                        startingPositon = false
                         currentTargetLocation = 1
+                    }
+                    //If the phone gets to the last location of the track location array
+                    if track.locations[track.locations.count - 1].distance(from: location) < 10 {
+                        step += 1
+                        startTimer()
+                        startingPositon = true
+                        currentTargetLocation = track.locations.count - 1
                     }
                 }
                 
@@ -106,13 +126,23 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 if step == 1 {
                     instructionBox.text = "Follow the line \(currentTargetLocation)"
                     
-                    
-                    
                     //Add something for if the phone gets off track
+                    /*
+                    if Double(track.locations[currentTargetLocation].distance(from: location)) > Double(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation])) {
+                        print("Outside")
+                    }*/
                     
+                    //If the phone gets to the last location of the track relative to array positions
+                    if Double((track.locations.last?.distance(from: location))!) < 10 && currentTargetLocation == track.locations.count - 1 && !startingPositon {
+                        step += 1
+                        ServerCommands.addTime(time: time, tracknumber: track.id) { resp in
+                            print("send info")
+                            print(resp)
+                        }
+                    }
                     
-                    //If the phone gets to the last location of the track
-                    if Double((track.locations.last?.distance(from: location))!) < 10 && time > 5{
+                    //If the phone gets to the first location according to array positions
+                    if Double(track.locations[0].distance(from: location)) < 10 && currentTargetLocation == 0 && startingPositon {
                         step += 1
                         ServerCommands.addTime(time: time, tracknumber: track.id) { resp in
                             print("send info")
@@ -127,19 +157,23 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                     actionButton(self)
                 }
                 
-                //If the phone gets off track
+                //After the phone has gotten off of the track
                 if step == 3 {
                     
                 }
             }
+            //print(track.locations.count - 1)
+            //print(currentTargetLocation)
             
-            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10{
-                if currentTargetLocation < track.locations.count {
-                    map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation].coordinate.latitude, longitude: track.locations[currentTargetLocation].coordinate.longitude), radius: 10))
-                    currentTargetLocation += 1
-                }
+            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10 && currentTargetLocation < track.locations.count - 1 && currentTargetLocation > 0 {
+                //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation + 1].coordinate.latitude, longitude: track.locations[currentTargetLocation + 1].coordinate.longitude), radius: 10))
+                currentTargetLocation += startingPositon ? -1 : 1
             }
         }
+    }
+    
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
     }
     
     func timerUpdate() {

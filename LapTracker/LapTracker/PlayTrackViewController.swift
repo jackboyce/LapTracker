@@ -50,8 +50,10 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         timeLabel.text = ""
         loadMap()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
+        //track.locations = track.locations.reversed()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
+
         /*
         var tempCount = 0
         
@@ -104,7 +106,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 
                 //Before the phone gets to the beggining to the track
                 if step == 0 {
-                    instructionBox.text = "Proceed to the starting location"
+                    instructionBox.text = "Proceed to a starting location"
                     
                     //If the phone gets to the first location of the track locations array
                     if track.locations[0].distance(from: location) < 10 {
@@ -162,7 +164,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
             //print(track.locations.count - 1)
             //print(currentTargetLocation)
             
-            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10 && currentTargetLocation < track.locations.count - 1 && currentTargetLocation > 0 {
+            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10 && currentTargetLocation < track.locations.count && currentTargetLocation > 0 {
                 //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation + 1].coordinate.latitude, longitude: track.locations[currentTargetLocation + 1].coordinate.longitude), radius: 10))
                 currentTargetLocation += startingPositon ? -1 : 1
             }

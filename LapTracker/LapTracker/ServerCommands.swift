@@ -26,6 +26,19 @@ class ServerCommands {
         }
     }
     
+    public static func register(username: String, email: String, password: String, confirmPassword: String, completionHandler: @escaping (String?) -> ()) -> () {
+
+        let payload = ["name": "\(username)", "email": "\(email)", "password": "\(password)", "password_confirmation": "\(confirmPassword)"] as [String : Any]
+        
+        let loginurl = "\(ServerCommands.homeURL)/register"
+        Alamofire.request(loginurl, method: .post, parameters: payload).responseString {
+            (response) in
+            
+            let resp = response.result.value
+            completionHandler(resp)
+        }
+    }
+    
     public static func addTrack(name: String, completionHandler: @escaping (String?) -> ()) -> () {
         let payload = ["name": "\(name)", "user": "\(currentUserID())"] as [String : Any]
         

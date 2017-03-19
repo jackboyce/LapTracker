@@ -39,6 +39,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
 
         // Do any additional setup after loading the view.
         locationManager.requestAlwaysAuthorization()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

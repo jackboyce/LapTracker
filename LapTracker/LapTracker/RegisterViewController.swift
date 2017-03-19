@@ -13,10 +13,12 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var confirmationPassword: UITextField!
+    @IBOutlet weak var statusBox: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        statusBox.text = ""
         // Do any additional setup after loading the view.
     }
 
@@ -25,33 +27,16 @@ class RegisterViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func sendData() {
-        
-        var request = URLRequest(url: URL(string: "http://localhost:8000/register")!)
-        request.httpMethod = "POST"
-        let postString = "name=\(username.text!)&email=\(email.text!)&password=\(password.text!)&password_confirmation=\(confirmationPassword.text!)"
-        print(postString)
-        request.httpBody = postString.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
-            }
-            
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
-        }
-        task.resume()
-    }
     
     @IBAction func register(_ sender: Any) {
         print("Register")
-        sendData()
+        //sendData()
+        ServerCommands.clearUser {
+            ServerCommands.register(username: self.username.text!, email: self.email.text!, password: self.password.text!, confirmPassword: self.confirmationPassword.text!) { resp in
+                print(resp)
+                self.statusBox.text = "Account created"
+            }
+        }
         //_ = navigationController?.popViewController(animated: true)
     }
 

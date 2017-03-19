@@ -13,10 +13,13 @@ class Track {
     var id: Int = 0
     var name: String = ""
     var creator: String = ""
+    var locations: [CLLocation] = [CLLocation]()
+    /*
     var locations: [CLLocation] {
         
         return ServerCommands.getLocationsForTrack(id : id)
-    }
+    }*/
+    
     var times : [(time: Double, username: String)] {
         return ServerCommands.getTimesForTrack(id: id)
     }
@@ -25,5 +28,6 @@ class Track {
         self.id = id
         self.name = name
         self.creator = creator
+        self.locations = ServerCommands.getLocationsForTrack(id : id)
     }
 }

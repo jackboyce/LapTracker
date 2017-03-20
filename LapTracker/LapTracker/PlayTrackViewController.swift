@@ -108,19 +108,33 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 if step == 0 {
                     instructionBox.text = "Proceed to a starting location"
                     
+                    var first = 0
+                    var last = track.locations.count - 1
+                    
+                    while track.locations[first].distance(from: track.locations[last]) < 20 {
+                        first += 1
+                        last -= 1
+                    }
+                    
+                    /*
+                    if track.locations[first].distance(from: track.locations[last]) < 20 {
+                        first = 1
+                        last = track.locations.count - 2
+                    }*/
+                    
                     //If the phone gets to the first location of the track locations array
-                    if track.locations[0].distance(from: location) < 10 {
+                    if track.locations[first].distance(from: location) < 10 {
                         step += 1
                         startTimer()
                         startingPositon = false
-                        currentTargetLocation = 1
+                        currentTargetLocation = first + 1
                     }
                     //If the phone gets to the last location of the track location array
-                    if track.locations[track.locations.count - 1].distance(from: location) < 10 {
+                    if track.locations[last].distance(from: location) < 10 {
                         step += 1
                         startTimer()
                         startingPositon = true
-                        currentTargetLocation = track.locations.count - 1
+                        currentTargetLocation = last - 1
                     }
                 }
                 
@@ -129,7 +143,13 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                     instructionBox.text = "Follow the line \(currentTargetLocation)"
                     
                     //Add something for if the phone gets off track
-                    
+                    if location.distance(from: track.locations[currentTargetLocation]) > track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * 2 {
+                        actionButton(self)
+                        instructionBox.text = "Got off track, please try again"
+                        step = 3
+                        print("Off Track")
+                        print("\(location.distance(from: track.locations[currentTargetLocation])) > \(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * 2)")
+                    }
                     
                     //If the phone gets to the last location of the track relative to array positions
                     if Double((track.locations.last?.distance(from: location))!) < 10 && currentTargetLocation == track.locations.count - 1 && !startingPositon {
@@ -178,25 +198,6 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     func timerUpdate() {
         time += timerInterval
         timeLabel.text = "Time: \(time)"
-    }
-    
-    func radiansToDegrees (radians: Double)->Double {
-        return radians * 180 / M_PI
-    }
-    
-    func degreesToRadians(degrees: Double) -> Double {
-        return degrees * M_PI / 180
-    }
-    
-    func distFromLineSegment(first: CLLocation, second: CLLocation, current: CLLocation) -> Double {
-        var x1 = first.coordinate.latitude
-        var y1 = first.coordinate.longitude
-        var x2 = second.coordinate.latitude
-        var y2 = second.coordinate.longitude
-        var x0 = current.coordinate.latitude
-        var y0 = current.coordinate.longitude
-        
-        return 0
     }
     
     func mapRegion() -> MKCoordinateRegion {

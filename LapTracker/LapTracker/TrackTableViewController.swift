@@ -7,15 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
-class TrackTableViewController: UITableViewController {
+class TrackTableViewController: UITableViewController, CLLocationManagerDelegate {
 
     var tracks: [Track] = [Track]()
+    var locationManager:CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+        
         
         /*
         let center = UIButton(type: UIButtonType.custom) as UIButton
@@ -78,8 +81,6 @@ class TrackTableViewController: UITableViewController {
         playTrackViewController.track = tracks[indexPath.row]
         self.navigationController?.pushViewController(playTrackViewController, animated: true)
     }
-
-    
 
     /*
     // Override to support conditional editing of the table view.

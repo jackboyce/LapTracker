@@ -56,14 +56,17 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
 
         
-        
+        /*
         var tempCount = 0
         
         
         for location in track.locations {
             map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(5 + tempCount))))
             //tempCount += 2
-        }
+        }*/
+        
+        map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[0].coordinate.latitude, longitude: track.locations[0].coordinate.longitude), radius: CLLocationDistance(Int(5))))
+        map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[track.locations.count - 1].coordinate.latitude, longitude: track.locations[track.locations.count - 1].coordinate.longitude), radius: CLLocationDistance(Int(5))))
         
     }
 

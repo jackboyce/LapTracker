@@ -10,8 +10,6 @@
 		1A21904E1E40F38E00AFAB45 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A21904D1E40F38E00AFAB45 /* MapKit.framework */; };
 		1ACF2F7E1E770FEB0015CF12 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F7D1E770FEB0015CF12 /* Track.swift */; };
 		1ACF2F901E7869230015CF12 /* PlayTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F8F1E7869230015CF12 /* PlayTrackViewController.swift */; };
-		1ACF2F921E789AE50015CF12 /* neck.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 1ACF2F911E789AE50015CF12 /* neck.gpx */; };
-		1ACF2F941E789BB30015CF12 /* GpsiesTrack.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 1ACF2F931E789BB30015CF12 /* GpsiesTrack.gpx */; };
 		1ACF2F981E79BB9D0015CF12 /* LeaderboardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F971E79BB9D0015CF12 /* LeaderboardTableViewController.swift */; };
 		1AF7BB341E3E917D005E2937 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF7BB331E3E917D005E2937 /* AppDelegate.swift */; };
 		1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF7BB371E3E917D005E2937 /* Main.storyboard */; };
@@ -163,8 +161,6 @@
 		1A21904D1E40F38E00AFAB45 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		1ACF2F7D1E770FEB0015CF12 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		1ACF2F8F1E7869230015CF12 /* PlayTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayTrackViewController.swift; sourceTree = "<group>"; };
-		1ACF2F911E789AE50015CF12 /* neck.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = neck.gpx; path = ../../../Downloads/neck.gpx; sourceTree = "<group>"; };
-		1ACF2F931E789BB30015CF12 /* GpsiesTrack.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = GpsiesTrack.gpx; path = ../../../Downloads/GpsiesTrack.gpx; sourceTree = "<group>"; };
 		1ACF2F971E79BB9D0015CF12 /* LeaderboardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeaderboardTableViewController.swift; path = ../LeaderboardTableViewController.swift; sourceTree = "<group>"; };
 		1AF7BB301E3E917D005E2937 /* LapTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF7BB331E3E917D005E2937 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -208,8 +204,6 @@
 		1AF7BB271E3E917C005E2937 = {
 			isa = PBXGroup;
 			children = (
-				1ACF2F931E789BB30015CF12 /* GpsiesTrack.gpx */,
-				1ACF2F911E789AE50015CF12 /* neck.gpx */,
 				1AF7BBCB1E3FA8F4005E2937 /* Alamofire.xcodeproj */,
 				1AF7BB811E3EB968005E2937 /* Locksmith.xcodeproj */,
 				1AF7BB321E3E917D005E2937 /* LapTracker */,
@@ -464,10 +458,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ACF2F941E789BB30015CF12 /* GpsiesTrack.gpx in Resources */,
 				1AF7BB411E3E917D005E2937 /* LaunchScreen.storyboard in Resources */,
 				1AF7BB3E1E3E917D005E2937 /* Assets.xcassets in Resources */,
-				1ACF2F921E789AE50015CF12 /* neck.gpx in Resources */,
 				1AF7BB391E3E917D005E2937 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

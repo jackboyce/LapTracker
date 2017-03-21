@@ -214,7 +214,8 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
 
         time += timerInterval
         timeLabel.text = "Time: \(time)"
-        instructionBox.text = "Follow the line \(currentTargetLocation)"
+        //instructionBox.text = "Follow the line \(currentTargetLocation)"
+        instructionBox.text = "Follow the line"
     }
     
     func mapRegion() -> MKCoordinateRegion {

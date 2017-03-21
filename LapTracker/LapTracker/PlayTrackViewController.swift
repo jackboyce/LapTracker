@@ -24,6 +24,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     var timerInterval = 0.1
     var currentTargetLocation = 0
     var startingPositon = false //false if the person starts on the origional side and true if they are going in reverse
+    var timerStarted = false
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -32,7 +33,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         _locationManager.activityType = .other
         
         // Movement threshold for new events
-        _locationManager.distanceFilter = 10.0
+        _locationManager.distanceFilter = 5.0
         return _locationManager
     }()
     
@@ -54,14 +55,15 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
 
-        /*
+        
+        
         var tempCount = 0
         
         
         for location in track.locations {
-            map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(10 + tempCount))))
+            map.add(MKCircle(center: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude), radius: CLLocationDistance(Int(5 + tempCount))))
             //tempCount += 2
-        }*/
+        }
         
     }
 
@@ -94,9 +96,11 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     
     func stop() {
         print("Stop")
-        timer.invalidate()
+        stopTimer()
         locationManager.stopUpdatingLocation()
     }
+    
+    var toleranceMultiple = 4.0
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
@@ -108,31 +112,32 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 if step == 0 {
                     instructionBox.text = "Proceed to a starting location"
                     
+                    
+                    //Used to find the first points on either end of the array that are no closer than 40 meters
                     var first = 0
                     var last = track.locations.count - 1
                     
-                    while track.locations[first].distance(from: track.locations[last]) < 20 {
+                    while track.locations[first].distance(from: track.locations[last]) < 40 {
                         first += 1
                         last -= 1
                     }
                     
-                    /*
-                    if track.locations[first].distance(from: track.locations[last]) < 20 {
-                        first = 1
-                        last = track.locations.count - 2
-                    }*/
+                    //Starts the timer at either the last point or first point of a track
+                    if track.locations[0].distance(from: location) < 10 || track.locations[track.locations.count - 1].distance(from: location) < 10 {
+                        startTimer()
+                    }
                     
-                    //If the phone gets to the first location of the track locations array
+                    //If the phone gets to the first location of the track locations array that is not closer than 40 meters
                     if track.locations[first].distance(from: location) < 10 {
                         step += 1
-                        startTimer()
+                        //startTimer()
                         startingPositon = false
                         currentTargetLocation = first + 1
                     }
-                    //If the phone gets to the last location of the track location array
+                    //If the phone gets to the last location of the track location array that is not closer than 40 meters
                     if track.locations[last].distance(from: location) < 10 {
                         step += 1
-                        startTimer()
+                        //startTimer()
                         startingPositon = true
                         currentTargetLocation = last - 1
                     }
@@ -140,15 +145,15 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
                 
                 //After the phone gets to the first location and the timer has started
                 if step == 1 {
-                    instructionBox.text = "Follow the line \(currentTargetLocation)"
+                    //instructionBox.text = "Follow the line \(currentTargetLocation)"
                     
                     //Add something for if the phone gets off track
-                    if location.distance(from: track.locations[currentTargetLocation]) > track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * 2 {
+                    if currentTargetLocation > 0 && currentTargetLocation <  track.locations.count - 1 && (location.distance(from: track.locations[currentTargetLocation]) > track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * toleranceMultiple ) {
                         actionButton(self)
                         instructionBox.text = "Got off track, please try again"
                         step = 3
-                        print("Off Track")
-                        print("\(location.distance(from: track.locations[currentTargetLocation])) > \(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * 2)")
+                        print("Off Track between \(currentTargetLocation - 1) and \(currentTargetLocation)")
+                        print("(Distance from target location > Distance between last and current target * \(toleranceMultiple)): \(location.distance(from: track.locations[currentTargetLocation])) > \(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * toleranceMultiple)")
                     }
                     
                     //If the phone gets to the last location of the track relative to array positions
@@ -184,7 +189,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
             //print(track.locations.count - 1)
             //print(currentTargetLocation)
             
-            if Double(track.locations[currentTargetLocation].distance(from: location)) < 10 && currentTargetLocation < track.locations.count && currentTargetLocation > 0 {
+            if currentTargetLocation > 0 && currentTargetLocation <  track.locations.count - 1 && Double(track.locations[currentTargetLocation].distance(from: location)) < 20 && currentTargetLocation < track.locations.count && currentTargetLocation > 0 {
                 //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation + 1].coordinate.latitude, longitude: track.locations[currentTargetLocation + 1].coordinate.longitude), radius: 10))
                 currentTargetLocation += startingPositon ? -1 : 1
             }
@@ -192,12 +197,24 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+        if !timerStarted {
+            timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+            timerStarted = true
+        }
+    }
+    
+    func stopTimer() {
+        if timerStarted {
+            timer.invalidate()
+            timerStarted = false
+        }
     }
     
     func timerUpdate() {
+
         time += timerInterval
         timeLabel.text = "Time: \(time)"
+        instructionBox.text = "Follow the line \(currentTargetLocation)"
     }
     
     func mapRegion() -> MKCoordinateRegion {

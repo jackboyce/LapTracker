@@ -24,7 +24,7 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
         _locationManager.activityType = .other
         
         // Movement threshold for new events
-        _locationManager.distanceFilter = 10.0
+        _locationManager.distanceFilter = 20.0
         return _locationManager
     }()
     

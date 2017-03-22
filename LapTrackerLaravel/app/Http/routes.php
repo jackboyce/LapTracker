@@ -12,16 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/map', 'HomeController@map');
 Route::get('/getTracks', 'TrackController@getTracks')->middleware('auth');
+//Route::post('/addTrack', ['middleware' => 'auth', 'uses' => 'TrackController@addTrack']);
 Route::post('/addTrack', 'TrackController@addTrack')->middleware('auth');
 Route::get('/getLocationsForTrack', 'TrackController@getLocationsForTrack')->middleware('auth');
 Route::post('/addLocation', 'TrackController@addLocation')->middleware('auth');
+Route::post('/addLocations', 'TrackController@addLocations')->middleware('auth');
 Route::get('/authStatus', 'TrackController@authStatus');
 Route::get('/currentUserID', 'TrackController@currentUserID');
 Route::post('/addTime', 'TrackController@addTime')->middleware('auth');

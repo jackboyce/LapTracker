@@ -55,6 +55,7 @@ class PlayTrackViewController: UIViewController, CLLocationManagerDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
 
+        UIApplication.shared.isIdleTimerDisabled = true
         
         /*
         var tempCount = 0

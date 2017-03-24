@@ -29,6 +29,7 @@ class HomeController extends Controller
 
     public function map()
     {
-        return view('map');
+        //perform stuff
+        return view('map', ['name'=>"string"]);
     }
 }

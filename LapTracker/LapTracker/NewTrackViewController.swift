@@ -36,6 +36,8 @@ class NewTrackViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         map.delegate = self
+        
+        UIApplication.shared.isIdleTimerDisabled = true
 
         // Do any additional setup after loading the view.
         locationManager.requestAlwaysAuthorization()

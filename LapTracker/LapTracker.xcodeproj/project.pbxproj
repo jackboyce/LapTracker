@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A21904E1E40F38E00AFAB45 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A21904D1E40F38E00AFAB45 /* MapKit.framework */; };
+		1A81868C1E895D45006B3E88 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A81868B1E895D45006B3E88 /* MainMapViewController.swift */; };
 		1ACF2F7E1E770FEB0015CF12 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F7D1E770FEB0015CF12 /* Track.swift */; };
 		1ACF2F901E7869230015CF12 /* PlayTrackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F8F1E7869230015CF12 /* PlayTrackViewController.swift */; };
 		1ACF2F981E79BB9D0015CF12 /* LeaderboardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACF2F971E79BB9D0015CF12 /* LeaderboardTableViewController.swift */; };
@@ -159,6 +160,7 @@
 
 /* Begin PBXFileReference section */
 		1A21904D1E40F38E00AFAB45 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		1A81868B1E895D45006B3E88 /* MainMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		1ACF2F7D1E770FEB0015CF12 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		1ACF2F8F1E7869230015CF12 /* PlayTrackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayTrackViewController.swift; sourceTree = "<group>"; };
 		1ACF2F971E79BB9D0015CF12 /* LeaderboardTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeaderboardTableViewController.swift; path = ../LeaderboardTableViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				1AF7BBA31E3EBB2F005E2937 /* LapTracker.entitlements */,
 				1AF7BB331E3E917D005E2937 /* AppDelegate.swift */,
 				1AF7BB371E3E917D005E2937 /* Main.storyboard */,
+				1A81868B1E895D45006B3E88 /* MainMapViewController.swift */,
 				1AF7BBE81E3FD733005E2937 /* NewTrackViewController.swift */,
 				1AF7BBA41E3EBC2D005E2937 /* TrackTableViewController.swift */,
 				1ACF2F8F1E7869230015CF12 /* PlayTrackViewController.swift */,
@@ -481,6 +484,7 @@
 				1AF7BBE91E3FD733005E2937 /* NewTrackViewController.swift in Sources */,
 				1AF7BB4E1E3EA4BE005E2937 /* LoginViewController.swift in Sources */,
 				1AF7BB4C1E3EA4A0005E2937 /* RegisterViewController.swift in Sources */,
+				1A81868C1E895D45006B3E88 /* MainMapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -74,7 +74,7 @@ class LoginViewController: UIViewController {
                 if(resp != nil){
                     //print(resp)
                     print("After login: \(ServerCommands.currentUserEmail())")
-                    self.segueToTracks()
+                    self.segueToMap()
                 }
             }
         }
@@ -86,6 +86,17 @@ class LoginViewController: UIViewController {
         if user == email.text! {
             let trackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Tracks") as! TrackTableViewController
             self.navigationController?.pushViewController(trackViewController, animated: true)
+        } else {
+            errorLabel.text = "error"
+        }
+    }
+    
+    func segueToMap() {
+        let user = ServerCommands.currentUserEmail()
+        
+        if user == email.text! {
+            let mainMapViewController = self.storyboard?.instantiateViewController(withIdentifier: "MainMap") as! MainMapViewController
+            self.navigationController?.pushViewController(mainMapViewController, animated: true)
         } else {
             errorLabel.text = "error"
         }

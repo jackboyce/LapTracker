@@ -180,6 +180,20 @@ class ServerCommands {
         }
         return tracks
     }
+    
+    public static func getTracksWithin(southWestLat: Double, southWestLong: Double, northEastLat: Double, northEastLong: Double) -> [(id: Int, name: String, creator: String)] {
+        var (data, response, error) = URLSession.shared.synchronousDataTask(with: NSURL(string: "\(homeURL)/getTracksWithin?northeastlat=\(northEastLat)&northeastlong=\(northEastLong)&southwestlat=\(southWestLat)&southwestlong=\(southWestLong)") as! URL)
+        let raw = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+        var rawTracks = raw.components(separatedBy: "][")
+        rawTracks.removeLast()
+        var tracks = [(id: Int, name: String, creator: String)]()
+        
+        for track in rawTracks {
+            let splitRawTrack = track.components(separatedBy: ",")
+            tracks.append((id: Int(splitRawTrack[0])!, name: splitRawTrack[1], creator: splitRawTrack[2]))
+        }
+        return tracks
+    }
 }
 
 

@@ -52,18 +52,18 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         formLines(southWestLat: southWest.latitude, southWestLong: southWest.longitude, northEastLat: northEast.latitude, northEastLong: northEast.longitude)
     }
     
-    var polylines = [MKPolyline]()
+    var polylines = [(id: Int, line: MKPolyline)]()
     
     func formLines(southWestLat: Double, southWestLong: Double, northEastLat: Double, northEastLong: Double) {
         var tracks = ServerCommands.getTracksWithin(southWestLat: southWestLat, southWestLong: southWestLong, northEastLat: northEastLat, northEastLong: northEastLong)
         //print(tracks)
         
         for track in tracks {
-            var temp = polyline(locations: ServerCommands.getLocationsForTrack(id: track.id))
-            if !polylines.contains(temp) {
+            if !polylines.contains(where: {$0.0 == track.id} ) {
+                var temp = polyline(locations: ServerCommands.getLocationsForTrack(id: track.id))
                 print("new")
                 map.add(temp)
-                polylines.append(temp)
+                polylines.append((track.id, temp))
             }
         }
     }

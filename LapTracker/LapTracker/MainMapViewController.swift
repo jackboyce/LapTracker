@@ -31,9 +31,16 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
 
         locationManager.requestAlwaysAuthorization()
         self.map.delegate = self
+        locationManager.startUpdatingLocation()
         // Do any additional setup after loading the view.
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
     }
 
+    func addPressed() {
+        clearPolylines()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -41,6 +48,15 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("update location")
+        for location in locations {
+            centerMapOnLocation(location: location)
+        }
+    }
+    
+    func centerMapOnLocation(location: CLLocation) {
+        var regionRadius = 1000.0
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
+        map.setRegion(coordinateRegion, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -48,13 +64,20 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         let northEast = map.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = map.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
         
-        //print(northEast)
-        //print(ServerCommands.getTracksWithin(southWestLat: southWest.latitude, southWestLong: southWest.longitude, northEastLat: northEast.latitude, northEastLong: northEast.longitude))
-        formLines(southWestLat: southWest.latitude, southWestLong: southWest.longitude, northEastLat: northEast.latitude, northEastLong: northEast.longitude)
+        formLines(southWest: southWest, northEast: northEast)
     }
     
-    func formLines(southWestLat: Double, southWestLong: Double, northEastLat: Double, northEastLong: Double) {
-        var tupleTracks = ServerCommands.getTracksWithin(southWestLat: southWestLat, southWestLong: southWestLong, northEastLat: northEastLat, northEastLong: northEastLong)
+    func formLines(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        
+        manageTracks(southWest: southWest, northEast: northEast)
+        
+        clearPolylinesOutside(southWest: southWest, northEast: northEast)
+        
+        addPolylinesInside(southWest: southWest, northEast: northEast)
+    }
+    
+    func manageTracks(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        let tupleTracks = ServerCommands.getTracksWithin(southWestLat: southWest.latitude, southWestLong: southWest.longitude, northEastLat: northEast.latitude, northEastLong: northEast.longitude)
         //print(tracks)
         
         for track in tupleTracks {
@@ -66,7 +89,24 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    func clearPolylines() {
+        //let lines = tracks.map{$0.polyline} as [MKPolyline]
+        //map.removeOverlays(lines)
+        map.removeOverlays(map.overlays)
+    }
     
+    func clearPolylinesOutside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        let lines = tracks.filter{$0.locations.first!.coordinate.latitude < southWest.latitude || $0.locations.first!.coordinate.latitude > northEast.latitude || $0.locations.first!.coordinate.longitude < southWest.longitude || $0.locations.first!.coordinate.longitude > northEast.longitude}
+        map.removeOverlays(lines.map{$0.polyline})
+        //map.o
+    }
+    
+    func addPolylinesInside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        let lines = tracks.filter{$0.locations.first!.coordinate.latitude > southWest.latitude && $0.locations.first!.coordinate.latitude < northEast.latitude && $0.locations.first!.coordinate.longitude > southWest.longitude && $0.locations.first!.coordinate.longitude < northEast.longitude}
+        map.addOverlays(lines.map{$0.polyline})
+    }
+    
+    /*
     func polyline(locations: [CLLocation]) -> MKPolyline {
         var coords = [CLLocationCoordinate2D]()
         
@@ -74,7 +114,8 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
             coords.append(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
         }
         return MKPolyline(coordinates: &coords, count: locations.count)
-    }
+    }*/
+    
     /*
     // MARK: - Navigation
 

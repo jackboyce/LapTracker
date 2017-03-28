@@ -95,14 +95,56 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         map.removeOverlays(map.overlays)
     }
     
+    /*
     func clearPolylinesOutside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         let lines = tracks.filter{$0.locations.first!.coordinate.latitude < southWest.latitude || $0.locations.first!.coordinate.latitude > northEast.latitude || $0.locations.first!.coordinate.longitude < southWest.longitude || $0.locations.first!.coordinate.longitude > northEast.longitude}
         map.removeOverlays(lines.map{$0.polyline})
         //map.o
+    }*/
+    
+    func clearPolylinesOutside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        let lines = tracks.filter{!trackWithin(track: $0, southWest: southWest, northEast: northEast)}
+        map.removeOverlays(lines.map{$0.polyline})
     }
     
+    func trackWithin(track: Track, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Bool {
+        let hbNorthEast = track.hitbox.northEast
+        let hbSouthWest = track.hitbox.southWest
+        let hbNorthWest = CLLocationCoordinate2D(latitude: hbSouthWest.latitude, longitude: hbNorthEast.longitude)
+        let hbSouthEast = CLLocationCoordinate2D(latitude: hbNorthEast.latitude, longitude: hbSouthWest.longitude)
+        
+        let northWestIsIn = hbNorthWest.latitude > southWest.latitude && hbNorthWest.latitude < northEast.latitude && hbNorthWest.longitude > southWest.longitude && hbNorthWest.longitude < northEast.longitude
+        
+        let northEastIsIn = hbNorthEast.latitude > southWest.latitude && hbNorthEast.latitude < northEast.latitude && hbNorthEast.longitude > southWest.longitude && hbNorthEast.longitude < northEast.longitude
+        
+        let southWestIsIn = hbSouthWest.latitude > southWest.latitude && hbSouthWest.latitude < northEast.latitude && hbSouthWest.longitude > southWest.longitude && hbSouthWest.longitude < northEast.longitude
+        
+        let southEastIsIn = hbSouthEast.latitude > southWest.latitude && hbSouthEast.latitude < northEast.latitude && hbSouthEast.longitude > southWest.longitude && hbSouthEast.longitude < northEast.longitude
+        
+        /*
+        print(track.name)
+        print("northwest: \(northWestIsIn)")
+        print("northeast: \(northEastIsIn)")
+        print("southwest: \(southEastIsIn)")
+        print("southeast: \(southEastIsIn)")
+        
+        map.add(MKCircle(center: hbNorthEast, radius: CLLocationDistance(Int(5))))
+        map.add(MKCircle(center: hbNorthWest, radius: CLLocationDistance(Int(5))))
+        map.add(MKCircle(center: hbSouthEast, radius: CLLocationDistance(Int(5))))
+        map.add(MKCircle(center: hbSouthWest, radius: CLLocationDistance(Int(5))))
+         */
+        
+        return northWestIsIn || northEastIsIn || southWestIsIn || southEastIsIn
+    }
+    
+    /*
     func addPolylinesInside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         let lines = tracks.filter{$0.locations.first!.coordinate.latitude > southWest.latitude && $0.locations.first!.coordinate.latitude < northEast.latitude && $0.locations.first!.coordinate.longitude > southWest.longitude && $0.locations.first!.coordinate.longitude < northEast.longitude}
+        map.addOverlays(lines.map{$0.polyline})
+    }*/
+    
+    func addPolylinesInside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        let lines = tracks.filter{trackWithin(track: $0, southWest: southWest, northEast: northEast)}
         map.addOverlays(lines.map{$0.polyline})
     }
     

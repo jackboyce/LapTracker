@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class MainMapViewController: UIViewController, CLLocationManagerDelegate {
+class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var map: MKMapView!
     var tracks = [Track]()
@@ -35,6 +35,12 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         // Do any additional setup after loading the view.
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+        
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tgr.numberOfTapsRequired = 1
+        tgr.delaysTouchesBegan = true
+        tgr.delegate = self
+        self.map.addGestureRecognizer(tgr)
     }
 
     func addPressed() {
@@ -137,6 +143,16 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         return northWestIsIn || northEastIsIn || southWestIsIn || southEastIsIn
     }
     
+    func pointInHitbox(point: CLLocationCoordinate2D) -> [Track] {
+        var retTracks = [Track]()
+        for track in tracks {
+            if point.latitude > track.hitbox.southWest.latitude && point.latitude < track.hitbox.northEast.latitude && point.longitude > track.hitbox.southWest.longitude && point.longitude < track.hitbox.northEast.longitude {
+                retTracks.append(track)
+            }
+        }
+        return retTracks
+    }
+    
     /*
     func addPolylinesInside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         let lines = tracks.filter{$0.locations.first!.coordinate.latitude > southWest.latitude && $0.locations.first!.coordinate.latitude < northEast.latitude && $0.locations.first!.coordinate.longitude > southWest.longitude && $0.locations.first!.coordinate.longitude < northEast.longitude}
@@ -146,6 +162,21 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
     func addPolylinesInside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         let lines = tracks.filter{trackWithin(track: $0, southWest: southWest, northEast: northEast)}
         map.addOverlays(lines.map{$0.polyline})
+    }
+    
+    func handleTap(gestureReconizer: UITapGestureRecognizer) {
+        if gestureReconizer.state != UIGestureRecognizerState.began {
+            let touchLocation = gestureReconizer.location(in: map)
+            let locationCoordinate = map.convert(touchLocation,toCoordinateFrom: map)
+            //print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
+            
+            var tempTracks = pointInHitbox(point: locationCoordinate)
+            for track in tempTracks {
+                print(track.name)
+            }
+            
+            return
+        }
     }
     
     /*

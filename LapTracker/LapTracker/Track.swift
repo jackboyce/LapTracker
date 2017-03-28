@@ -14,6 +14,7 @@ class Track {
     var name: String = ""
     var creator: String = ""
     var locations: [CLLocation] = [CLLocation]()
+    var polyline: MKPolyline!
     /*
     var locations: [CLLocation] {
         
@@ -29,5 +30,15 @@ class Track {
         self.name = name
         self.creator = creator
         self.locations = ServerCommands.getLocationsForTrack(id : id)
+        self.polyline = polyline(locations: self.locations)
+    }
+    
+    func polyline(locations: [CLLocation]) -> MKPolyline {
+        var coords = [CLLocationCoordinate2D]()
+        
+        for location in locations {
+            coords.append(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+        }
+        return MKPolyline(coordinates: &coords, count: locations.count)
     }
 }

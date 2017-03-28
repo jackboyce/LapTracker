@@ -13,6 +13,7 @@ import MapKit
 class MainMapViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var map: MKMapView!
+    var tracks = [Track]()
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -52,21 +53,19 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         formLines(southWestLat: southWest.latitude, southWestLong: southWest.longitude, northEastLat: northEast.latitude, northEastLong: northEast.longitude)
     }
     
-    var polylines = [(id: Int, line: MKPolyline)]()
-    
     func formLines(southWestLat: Double, southWestLong: Double, northEastLat: Double, northEastLong: Double) {
-        var tracks = ServerCommands.getTracksWithin(southWestLat: southWestLat, southWestLong: southWestLong, northEastLat: northEastLat, northEastLong: northEastLong)
+        var tupleTracks = ServerCommands.getTracksWithin(southWestLat: southWestLat, southWestLong: southWestLong, northEastLat: northEastLat, northEastLong: northEastLong)
         //print(tracks)
         
-        for track in tracks {
-            if !polylines.contains(where: {$0.0 == track.id} ) {
-                var temp = polyline(locations: ServerCommands.getLocationsForTrack(id: track.id))
+        for track in tupleTracks {
+            if !tracks.contains(where: {$0.id == track.id}) {
+                tracks.append(Track(id: track.id, name: track.name, creator: track.creator))
+                map.add((tracks.last?.polyline)!)
                 print("new")
-                map.add(temp)
-                polylines.append((track.id, temp))
             }
         }
     }
+    
     
     func polyline(locations: [CLLocation]) -> MKPolyline {
         var coords = [CLLocationCoordinate2D]()
@@ -76,7 +75,6 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate {
         }
         return MKPolyline(coordinates: &coords, count: locations.count)
     }
-
     /*
     // MARK: - Navigation
 

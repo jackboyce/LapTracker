@@ -14,7 +14,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     
     @IBOutlet weak var map: MKMapView!
     var tracks = [Track]()
-    var selected = false
+    var currentLocation: CLLocation!
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -56,6 +56,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("update location")
         for location in locations {
+            currentLocation = location
             centerMapOnLocation(location: location)
         }
     }
@@ -128,19 +129,6 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         
         let southEastIsIn = hbSouthEast.latitude > southWest.latitude && hbSouthEast.latitude < northEast.latitude && hbSouthEast.longitude > southWest.longitude && hbSouthEast.longitude < northEast.longitude
         
-        /*
-        print(track.name)
-        print("northwest: \(northWestIsIn)")
-        print("northeast: \(northEastIsIn)")
-        print("southwest: \(southEastIsIn)")
-        print("southeast: \(southEastIsIn)")
-        
-        map.add(MKCircle(center: hbNorthEast, radius: CLLocationDistance(Int(5))))
-        map.add(MKCircle(center: hbNorthWest, radius: CLLocationDistance(Int(5))))
-        map.add(MKCircle(center: hbSouthEast, radius: CLLocationDistance(Int(5))))
-        map.add(MKCircle(center: hbSouthWest, radius: CLLocationDistance(Int(5))))
-         */
-        
         return northWestIsIn || northEastIsIn || southWestIsIn || southEastIsIn
     }
     
@@ -170,23 +158,36 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
             let touchLocation = gestureReconizer.location(in: map)
             let locationCoordinate = map.convert(touchLocation,toCoordinateFrom: map)
             //print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
-            
-            var tempTracks = pointInHitbox(point: locationCoordinate)
-            for track in tempTracks {
-                print(track.name)
-                selectTrack(track: track)
-                //print(ServerCommands.getTimesForTrack(id: track.id))
-            }
+            tapped(locationCoordinate: locationCoordinate)
             
             return
         }
     }
     
-    func selectTrack(track: Track) {
-        if !selected {
-            clearAllExcept(track: track)
-            selected = true
-        } else {
+    func tapped(locationCoordinate: CLLocationCoordinate2D) {
+        selectTrack(tracks: pointInHitbox(point: locationCoordinate))
+    }
+    
+    var selected = false
+    
+    func selectTrack(tracks: [Track]) {
+        if tracks.isEmpty || selected {
+            deselect()
+        } else if tracks.count == 1 {
+            if !selected {
+                map.setRegion(mapRegion(track: tracks[0]), animated: true)
+                //map.region = mapRegion(track: tracks[0])
+                clearAllExcept(track: tracks[0])
+                selected = true
+            }
+        } else if tracks.count > 1 {
+            
+        }
+    }
+    
+    func deselect() {
+        if selected {
+            centerMapOnLocation(location: currentLocation)
             mapView(map, regionDidChangeAnimated: true)
             selected = false
         }
@@ -196,6 +197,25 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         var tempPolyline = track.polyline
         clearPolylines()
         map.add(tempPolyline!)
+    }
+    
+    func mapRegion(track: Track) -> MKCoordinateRegion {
+        
+        var minLat = track.locations[0].coordinate.latitude
+        var minLng = track.locations[0].coordinate.longitude
+        var maxLat = minLat
+        var maxLng = minLng
+        
+        for location in track.locations {
+            minLat = min(minLat, location.coordinate.latitude)
+            minLng = min(minLng, location.coordinate.longitude)
+            maxLat = max(maxLat, location.coordinate.latitude)
+            maxLng = max(maxLng, location.coordinate.longitude)
+        }
+        
+        return MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2, longitude: (minLng + maxLng)/2),
+            span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLng - minLng)*1.1))
     }
     
     /*

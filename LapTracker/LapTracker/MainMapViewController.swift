@@ -14,6 +14,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     
     @IBOutlet weak var map: MKMapView!
     var tracks = [Track]()
+    var selected = false
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -173,10 +174,28 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
             var tempTracks = pointInHitbox(point: locationCoordinate)
             for track in tempTracks {
                 print(track.name)
+                selectTrack(track: track)
+                //print(ServerCommands.getTimesForTrack(id: track.id))
             }
             
             return
         }
+    }
+    
+    func selectTrack(track: Track) {
+        if !selected {
+            clearAllExcept(track: track)
+            selected = true
+        } else {
+            mapView(map, regionDidChangeAnimated: true)
+            selected = false
+        }
+    }
+    
+    func clearAllExcept(track: Track) {
+        var tempPolyline = track.polyline
+        clearPolylines()
+        map.add(tempPolyline!)
     }
     
     /*

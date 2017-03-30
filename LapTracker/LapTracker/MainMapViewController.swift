@@ -15,6 +15,10 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     @IBOutlet weak var map: MKMapView!
     var tracks = [Track]()
     var currentLocation: CLLocation!
+    var selected = false
+    
+    //let addButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+    //let leaderboardButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
     
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -36,7 +40,6 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         // Do any additional setup after loading the view.
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
-        
         let tgr = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tgr.numberOfTapsRequired = 1
         tgr.delaysTouchesBegan = true
@@ -45,7 +48,11 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     }
 
     func addPressed() {
-        clearPolylines()
+        print("add pressed")
+    }
+    
+    func leaderboardPressed() {
+        print("leaderboard pressed")
     }
     
     override func didReceiveMemoryWarning() {
@@ -71,7 +78,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         print("moved")
         let northEast = map.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
         let southWest = map.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
-        
+       
         formLines(southWest: southWest, northEast: northEast)
     }
     
@@ -168,16 +175,15 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         selectTrack(tracks: pointInHitbox(point: locationCoordinate))
     }
     
-    var selected = false
-    
     func selectTrack(tracks: [Track]) {
-        if tracks.isEmpty || selected {
+        if /*tracks.isEmpty ||*/ selected {
             deselect()
         } else if tracks.count == 1 {
             if !selected {
                 map.setRegion(mapRegion(track: tracks[0]), animated: true)
                 //map.region = mapRegion(track: tracks[0])
                 clearAllExcept(track: tracks[0])
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
                 selected = true
             }
         } else if tracks.count > 1 {
@@ -189,6 +195,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         if selected {
             centerMapOnLocation(location: currentLocation)
             mapView(map, regionDidChangeAnimated: true)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
             selected = false
         }
     }

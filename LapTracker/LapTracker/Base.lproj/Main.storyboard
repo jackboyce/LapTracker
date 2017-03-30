@@ -228,17 +228,28 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TrU-Nk-54V">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHp-U7-Wwr">
+                                <rect key="frame" x="0.0" y="138" width="375" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TrU-Nk-54V" firstAttribute="top" secondItem="nMV-EB-BhP" secondAttribute="bottom" id="0Ks-nD-orV"/>
+                            <constraint firstItem="yHp-U7-Wwr" firstAttribute="centerX" secondItem="pwr-90-B2e" secondAttribute="centerX" id="Gt7-bd-oPM"/>
                             <constraint firstItem="TrU-Nk-54V" firstAttribute="top" secondItem="nMV-EB-BhP" secondAttribute="bottom" id="KV5-f5-AdS"/>
+                            <constraint firstItem="yHp-U7-Wwr" firstAttribute="leading" secondItem="pwr-90-B2e" secondAttribute="leadingMargin" constant="-16" id="M8N-ZL-0bb"/>
                             <constraint firstAttribute="trailing" secondItem="TrU-Nk-54V" secondAttribute="trailing" id="Ros-ZI-PT8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yHp-U7-Wwr" secondAttribute="trailing" constant="-16" id="UPv-oY-7ox"/>
                             <constraint firstItem="TrU-Nk-54V" firstAttribute="leading" secondItem="pwr-90-B2e" secondAttribute="leading" id="oCT-W0-QiI"/>
                             <constraint firstItem="s8B-yG-sEp" firstAttribute="top" secondItem="TrU-Nk-54V" secondAttribute="bottom" id="tBu-HU-30R"/>
+                            <constraint firstItem="yHp-U7-Wwr" firstAttribute="top" secondItem="nMV-EB-BhP" secondAttribute="bottom" constant="74" id="zrC-eg-Y9V"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="label" destination="yHp-U7-Wwr" id="LAX-Br-hap"/>
                         <outlet property="map" destination="TrU-Nk-54V" id="8b2-0G-lZE"/>
                     </connections>
                 </viewController>

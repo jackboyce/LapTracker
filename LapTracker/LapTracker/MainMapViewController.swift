@@ -12,10 +12,22 @@ import MapKit
 
 class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     
+    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var map: MKMapView!
     var tracks = [Track]()
+    var timer = Timer()
+    var recording = false
+    var step = 0
+    var time = 0.0
+    var timerInterval = 0.1
+    var currentTargetLocation = 0
+    var startingPositon = false //false if the person starts on the origional side and true if they are going in reverse
+    var timerStarted = false
     var currentLocation: CLLocation!
-    var selected = false
+    var selected: Track? = nil
+    var intentionalMove = false
+    var playing = false
+    var toleranceMultiple = 4.0
     
     //let addButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
     //let leaderboardButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
@@ -40,6 +52,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         // Do any additional setup after loading the view.
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+        
         let tgr = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tgr.numberOfTapsRequired = 1
         tgr.delaysTouchesBegan = true
@@ -53,6 +66,9 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     
     func leaderboardPressed() {
         print("leaderboard pressed")
+        let leaderboardTrackViewController = self.storyboard?.instantiateViewController(withIdentifier: "Leaderboard") as! LeaderboardTableViewController
+        leaderboardTrackViewController.track = selected
+        self.navigationController?.pushViewController(leaderboardTrackViewController, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,22 +80,166 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         print("update location")
         for location in locations {
             currentLocation = location
-            centerMapOnLocation(location: location)
+            if !playing || selected == nil {
+                centerMapOnLocation(location: location)
+            }
+            
+            if playing {
+                playWith(location: currentLocation)
+            }
         }
+    }
+    
+    func playWith(location: CLLocation) {
+        var track = selected!
+        let howRecent = location.timestamp.timeIntervalSinceNow
+        print("Playing \(track.name)")
+        print("Step \(step)")
+        
+        //if abs(howRecent) < 10 && location.horizontalAccuracy < 20 {
+            
+            //Before the phone gets to the beggining to the track
+            if step == 0 {
+                label.text = "Proceed to a starting location"
+                //Used to find the first points on either end of the array that are no closer than 40 meters
+                var first = 0
+                var last = track.locations.count - 1
+                
+                while track.locations[first].distance(from: track.locations[last]) < 40 {
+                    first += 1
+                    last -= 1
+                }
+                
+                //Starts the timer at either the last point or first point of a track
+                if track.locations[0].distance(from: location) < 10 || track.locations[track.locations.count - 1].distance(from: location) < 10 {
+                    startTimer()
+                }
+                
+                //If the phone gets to the first location of the track locations array that is not closer than 40 meters
+                if track.locations[first].distance(from: location) < 10 {
+                    step += 1
+                    //startTimer()
+                    startingPositon = false
+                    currentTargetLocation = first + 1
+                }
+                //If the phone gets to the last location of the track location array that is not closer than 40 meters
+                if track.locations[last].distance(from: location) < 10 {
+                    step += 1
+                    //startTimer()
+                    startingPositon = true
+                    currentTargetLocation = last - 1
+                }
+            }
+            
+            //After the phone gets to the first location and the timer has started
+            if step == 1 {
+                //instructionBox.text = "Follow the line \(currentTargetLocation)"
+                
+                //Add something for if the phone gets off track
+                if currentTargetLocation > 0 && currentTargetLocation <  track.locations.count - 1 && (location.distance(from: track.locations[currentTargetLocation]) > track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * toleranceMultiple ) {
+                    stopPlaying()
+                    label.text = "Got off track, please try again"
+                    step = 3
+                    print("Off Track between \(currentTargetLocation - 1) and \(currentTargetLocation)")
+                    print("(Distance from target location > Distance between last and current target * \(toleranceMultiple)): \(location.distance(from: track.locations[currentTargetLocation])) > \(track.locations[currentTargetLocation - 1].distance(from: track.locations[currentTargetLocation]) * toleranceMultiple)")
+                }
+                
+                //If the phone gets to the last location of the track relative to array positions
+                if Double((track.locations.last?.distance(from: location))!) < 10 && currentTargetLocation == track.locations.count - 1 && !startingPositon {
+                    step += 1
+                    ServerCommands.addTime(time: time, tracknumber: track.id) { resp in
+                        print("send info")
+                        print(resp)
+                    }
+                }
+                
+                //If the phone gets to the first location according to array positions
+                if Double(track.locations[0].distance(from: location)) < 10 && currentTargetLocation == 0 && startingPositon {
+                    step += 1
+                    ServerCommands.addTime(time: time, tracknumber: track.id) { resp in
+                        print("send info")
+                        print(resp)
+                    }
+                }
+            }
+            
+            //After the phone has gotten to the last location of the track
+            if step == 2 {
+                label.text = "Done"
+                stopPlaying()
+            }
+            
+            //After the phone has gotten off of the track
+            if step == 3 {
+                
+            }
+        //}
+        //print(track.locations.count - 1)
+        //print(currentTargetLocation)
+        
+        if currentTargetLocation > 0 && currentTargetLocation <  track.locations.count - 1 && Double(track.locations[currentTargetLocation].distance(from: location)) < 20 && currentTargetLocation < track.locations.count && currentTargetLocation > 0 {
+            //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation + 1].coordinate.latitude, longitude: track.locations[currentTargetLocation + 1].coordinate.longitude), radius: 10))
+            currentTargetLocation += startingPositon ? -1 : 1
+        }
+    }
+    
+    func startTimer() {
+        if !timerStarted {
+            timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+            timerStarted = true
+        }
+    }
+    
+    func stopTimer() {
+        if timerStarted {
+            timer.invalidate()
+            timerStarted = false
+        }
+    }
+    
+    func startPlaying() {
+        print("Start")
+        step = 0
+        time = 0.0
+        currentTargetLocation = 0
+        //locationManager.startUpdatingLocation()
+    }
+    
+    func stopPlaying() {
+        print("Stop")
+        stopTimer()
+        //locationManager.stopUpdatingLocation()
+    }
+    
+    func timerUpdate() {
+        time += timerInterval
+        //timeLabel.text = "Time: \(time)"
+        //instructionBox.text = "Follow the line \(currentTargetLocation)"
+        label.text = "Follow the line \(time)"
     }
     
     func centerMapOnLocation(location: CLLocation) {
         var regionRadius = 1000.0
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        map.setRegion(coordinateRegion, animated: true)
+        setMapRegionWithoutTrigger(region: coordinateRegion)
+        //map.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func setMapRegionWithoutTrigger(region: MKCoordinateRegion) {
+        intentionalMove = true
+        map.setRegion(region, animated: true)
+        //intentionalMove = false
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print("moved")
-        let northEast = map.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
-        let southWest = map.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
-       
-        formLines(southWest: southWest, northEast: northEast)
+        if !intentionalMove {
+            print("moved")
+            let northEast = map.convert(CGPoint(x: mapView.bounds.width, y: 0), toCoordinateFrom: mapView)
+            let southWest = map.convert(CGPoint(x: 0, y: mapView.bounds.height), toCoordinateFrom: mapView)
+            
+            formLines(southWest: southWest, northEast: northEast)
+        }
+        intentionalMove = false
     }
     
     func formLines(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
@@ -120,6 +280,11 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     func clearPolylinesOutside(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         let lines = tracks.filter{!trackWithin(track: $0, southWest: southWest, northEast: northEast)}
         map.removeOverlays(lines.map{$0.polyline})
+    }
+    
+    func addCirclesOnEndsTo(track: Track) {
+        map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[0].coordinate.latitude, longitude: track.locations[0].coordinate.longitude), radius: CLLocationDistance(Int(10))))
+        map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[track.locations.count - 1].coordinate.latitude, longitude: track.locations[track.locations.count - 1].coordinate.longitude), radius: CLLocationDistance(Int(10))))
     }
     
     func trackWithin(track: Track, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Bool {
@@ -176,15 +341,21 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     }
     
     func selectTrack(tracks: [Track]) {
-        if /*tracks.isEmpty ||*/ selected {
+        if /*tracks.isEmpty ||*/ selected != nil {
             deselect()
         } else if tracks.count == 1 {
-            if !selected {
-                map.setRegion(mapRegion(track: tracks[0]), animated: true)
+            if selected == nil {
+                //map.setRegion(mapRegion(track: tracks[0]), animated: true)
+                setMapRegionWithoutTrigger(region: mapRegion(track: tracks[0]))
+                playing = true
+                selected = tracks[0]
+                //label.text = "TESSTING"
+                playWith(location: currentLocation)
                 //map.region = mapRegion(track: tracks[0])
-                clearAllExcept(track: tracks[0])
+                clearAllExcept(track: selected!)
+                addCirclesOnEndsTo(track: selected!)
                 navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
-                selected = true
+                
             }
         } else if tracks.count > 1 {
             
@@ -192,11 +363,14 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     }
     
     func deselect() {
-        if selected {
+        if selected != nil {
             centerMapOnLocation(location: currentLocation)
             mapView(map, regionDidChangeAnimated: true)
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
-            selected = false
+            stopPlaying()
+            selected = nil
+            playing = false
+            label.text = ""
         }
     }
     

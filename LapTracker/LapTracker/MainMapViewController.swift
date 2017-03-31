@@ -46,6 +46,8 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        intentionalMove = true
+        
         locationManager.requestAlwaysAuthorization()
         self.map.delegate = self
         locationManager.startUpdatingLocation()
@@ -208,6 +210,9 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     func stopPlaying() {
         print("Stop")
         stopTimer()
+        //step = 0
+        //time = 0.0
+        //currentTargetLocation = 0
         //locationManager.stopUpdatingLocation()
     }
     
@@ -221,8 +226,8 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     func centerMapOnLocation(location: CLLocation) {
         var regionRadius = 1000.0
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        setMapRegionWithoutTrigger(region: coordinateRegion)
-        //map.setRegion(coordinateRegion, animated: true)
+        //setMapRegionWithoutTrigger(region: coordinateRegion)
+        map.setRegion(coordinateRegion, animated: true)
     }
     
     func setMapRegionWithoutTrigger(region: MKCoordinateRegion) {
@@ -350,6 +355,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
                 playing = true
                 selected = tracks[0]
                 //label.text = "TESSTING"
+                startPlaying()
                 playWith(location: currentLocation)
                 //map.region = mapRegion(track: tracks[0])
                 clearAllExcept(track: selected!)

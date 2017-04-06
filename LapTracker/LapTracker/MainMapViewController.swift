@@ -27,7 +27,10 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     var selected: Track? = nil
     var intentionalMove = false
     var playing = false
+    var adding = false
+    var addingStopped = false
     var toleranceMultiple = 4.0
+    var locations = [CLLocation]()
     
     //let addButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
     //let leaderboardButtonItem = UIBarButtonItem(title: "Leaderboard", style: .plain, target: self, action: #selector(leaderboardPressed))
@@ -55,6 +58,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
         
+        
         let tgr = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tgr.numberOfTapsRequired = 1
         tgr.delaysTouchesBegan = true
@@ -63,7 +67,56 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     }
 
     func addPressed() {
-        print("add pressed")
+        print("Add pressed")
+        //adding = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(startRecordPressed))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelAddPressed))
+    }
+    
+    func startRecordPressed() {
+        print("Start record pressed")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopRecordPressed))
+        adding = true
+        time = 0.0
+        //distance = 0.0
+        locations.removeAll(keepingCapacity: false)
+        timer = Timer.scheduledTimer(timeInterval: timerInterval, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+        //startLocationUpdates()
+        
+        //navigationItem.leftBarButtonItem = nil
+    }
+    
+    func cancelAddPressed() {
+        print("Cancel add pressed")
+        adding = false
+        addingStopped = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addPressed))
+        navigationItem.leftBarButtonItem = nil
+    }
+    
+    func stopRecordPressed() {
+        print("stop record pressed")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveRecordPressed))
+        //adding = false
+        addingStopped = true
+        timer.invalidate()
+        setMapRegionWithoutTrigger(region: mapRegion(locations: locations))
+    }
+    
+    func saveRecordPressed() {
+        print("Save record pressed")
+        promptFor(title: "Name", message: "Enter name for track", placeholder: "Track Name") { resp in
+            ServerCommands.addTrackWithLocations(name: resp!, locations: self.locations) { resp in
+                print("sent all locations")
+                //print(resp!)
+                ServerCommands.addTime(time: self.time, tracknumber: Int(resp!)!) { resp in
+                    //print(resp)
+                    self.label.text = ""
+                    self.time = 0
+                    self.cancelAddPressed()
+                }
+            }
+        }
     }
     
     func leaderboardPressed() {
@@ -82,12 +135,16 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         print("update location")
         for location in locations {
             currentLocation = location
-            if !playing || selected == nil {
+            if !playing && selected == nil && !adding {
                 centerMapOnLocation(location: location)
             }
             
             if playing {
                 playWith(location: currentLocation)
+            }
+            
+            if adding && !addingStopped {
+                addWith(location: currentLocation)
             }
         }
     }
@@ -183,6 +240,25 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
             //map.add(MKCircle(center: CLLocationCoordinate2D(latitude: track.locations[currentTargetLocation + 1].coordinate.latitude, longitude: track.locations[currentTargetLocation + 1].coordinate.longitude), radius: 10))
             currentTargetLocation += startingPositon ? -1 : 1
         }
+    }
+    
+    func addWith(location: CLLocation) {
+        if self.locations.count > 0 {
+            //distance += location.distance(from: self.locations.last!)
+            
+            var coords = [CLLocationCoordinate2D]()
+            coords.append(self.locations.last!.coordinate)
+            coords.append(location.coordinate)
+            
+            let region = MKCoordinateRegionMakeWithDistance(location.coordinate, 500, 500)
+            map.setRegion(region, animated: true)
+            //map.setRegion(mapRegion(locations: locations), animated: true)
+            
+            map.add(MKPolyline(coordinates: &coords, count: coords.count))
+        }
+        //save location
+        self.locations.append(location)
+
     }
     
     func startTimer() {
@@ -403,6 +479,49 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
         return MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2, longitude: (minLng + maxLng)/2),
             span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLng - minLng)*1.1))
+    }
+    
+    func mapRegion(locations: [CLLocation]) -> MKCoordinateRegion {
+        
+        var minLat = locations[0].coordinate.latitude
+        var minLng = locations[0].coordinate.longitude
+        var maxLat = minLat
+        var maxLng = minLng
+        
+        for location in locations {
+            minLat = min(minLat, location.coordinate.latitude)
+            minLng = min(minLng, location.coordinate.longitude)
+            maxLat = max(maxLat, location.coordinate.latitude)
+            maxLng = max(maxLng, location.coordinate.longitude)
+        }
+        
+        return MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2, longitude: (minLng + maxLng)/2),
+            span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLng - minLng)*1.1))
+    }
+    
+    func promptFor(title: String, message: String, placeholder: String, completionHandler: @escaping (String?) -> ()) -> () {
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.placeholder = placeholder
+        }
+        
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            //print("Text field: \(textField?.text)")
+            let resp = alert?.textFields![0].text
+            completionHandler(resp)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak alert] (_) in
+        }))
+        
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
     }
     
     /*

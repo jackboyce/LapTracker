@@ -104,6 +104,11 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
     }
     
     func saveRecordPressed() {
+        /*
+        for a in locations {
+            print("\(a.coordinate.latitude) \(a.coordinate.longitude)")
+        }*/
+        
         print("Save record pressed")
         promptFor(title: "Name", message: "Enter name for track", placeholder: "Track Name") { resp in
             ServerCommands.addTrackWithLocations(name: resp!, locations: self.locations) { resp in

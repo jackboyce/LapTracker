@@ -51,7 +51,7 @@ class MainMapViewController: UIViewController, CLLocationManagerDelegate, UIGest
 
         intentionalMove = true
         
-        locationManager.requestAlwaysAuthorization()
+        locationManager.requestAlwaysAuthorization()//fix this
         self.map.delegate = self
         locationManager.startUpdatingLocation()
         // Do any additional setup after loading the view.
